@@ -35,6 +35,9 @@ export function NavBar({ stars, downloads }: NavBarProps) {
                     <a href="https://docs.roocode.com" target="_blank" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
                         Documentation
                     </a>
+                    <a href="https://shard-dogwood-daf.notion.site/Join-Roo-Code-1b7fd1401b0a809e9e58eac91e352667" target="_blank" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
+                        Careers
+                    </a>
                 </nav>
 
                 <div className="hidden md:flex md:items-center md:space-x-3">
