@@ -118,7 +118,7 @@ export function Footer() {
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://shard-dogwood-daf.notion.site/Join-Roo-Code-1b7fd1401b0a809e9e58eac91e352667" target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href="https://shard-dogwood-daf.notion.site/Join-Roo-Code-1b7fd1401b0a809e9e58eac91e352667" target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Careers
                                         </a>
                                     </li>
