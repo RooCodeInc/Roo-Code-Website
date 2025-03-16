@@ -53,7 +53,7 @@ const faqs: FAQItem[] = [
     },
     {
         question: "What if I just want a casual coding 'vibe'?",
-        answer: "Roo Code shines for both serious enterprise development and casual \"vibe coding.\" You can ask it to quickly prototype ideas, refactor on the fly, or provide design suggestions—without a rigid, step-by-step process.",
+        answer: 'Roo Code shines for both serious enterprise development and casual "vibe coding." You can ask it to quickly prototype ideas, refactor on the fly, or provide design suggestions—without a rigid, step-by-step process.',
     },
     {
         question: "Can I contribute to Roo Code?",
@@ -86,7 +86,7 @@ export function FAQSection() {
                         }}
                     >
                         <h2 className="bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text text-4xl font-bold tracking-tight text-transparent sm:text-5xl">Frequently Asked Questions</h2>
-                        <p className="mt-6 text-lg text-muted-foreground">Everything you need to know about RooCode and how it can transform your development workflow.</p>
+                        <p className="mt-6 text-lg text-muted-foreground">Everything you need to know about Roo Code and how it can transform your development workflow.</p>
                     </motion.div>
                 </div>
 

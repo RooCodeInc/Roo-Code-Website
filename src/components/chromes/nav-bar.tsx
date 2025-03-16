@@ -17,7 +17,7 @@ export function NavBar({ stars, downloads }: NavBarProps) {
                 <div className="flex items-center">
                     <Link href="/" className="flex items-center space-x-2">
                         <Code className="h-8 w-8 text-foreground" />
-                        <span className="text-xl font-bold">RooCode</span>
+                        <span className="text-xl font-bold">Roo Code</span>
                     </Link>
                 </div>
 

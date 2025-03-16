@@ -11,7 +11,7 @@ export function Footer() {
                     <div className="space-y-8">
                         <div className="flex items-center space-x-2">
                             <Code className="h-6 w-6 text-foreground" />
-                            <span className="text-lg font-bold text-foreground">RooCode</span>
+                            <span className="text-lg font-bold text-foreground">Roo Code</span>
                         </div>
                         <p className="max-w-md text-sm leading-6 text-muted-foreground md:pr-16 lg:pr-32">Empowering developers to build better software faster with AI-powered tools and insights.</p>
                         <div className="flex space-x-5">
