@@ -4,6 +4,7 @@ import { Code } from "lucide-react";
 import ThemeToggle from "@/components/chromes/theme-toggle";
 import { RxGithubLogo } from "react-icons/rx";
 import { VscVscode } from "react-icons/vsc";
+import { EXTERNAL_LINKS } from "@/lib/constants";
 
 interface NavBarProps {
     stars: string | null;
@@ -26,24 +27,27 @@ export function NavBar({ stars, downloads }: NavBarProps) {
                     <ScrollButton targetId="features" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
                         Features
                     </ScrollButton>
-                    <ScrollButton targetId="testimonials" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
+                    <ScrollButton targetId="testimonials" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground max-lg:hidden">
                         Testimonials
                     </ScrollButton>
                     <ScrollButton targetId="faq" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
                         FAQ
                     </ScrollButton>
-                    <a href="https://docs.roocode.com" target="_blank" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
+                    <a href={EXTERNAL_LINKS.DOCUMENTATION} target="_blank" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
                         Documentation
+                    </a>
+                    <a href={EXTERNAL_LINKS.CAREERS} target="_blank" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
+                        Careers
                     </a>
                 </nav>
 
                 <div className="hidden md:flex md:items-center md:space-x-3">
                     <ThemeToggle />
-                    <Link href="https://github.com/RooVetGit/Roo-Code" target="_blank" className="hidden items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground md:flex">
+                    <Link href={EXTERNAL_LINKS.GITHUB} target="_blank" className="hidden items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground md:flex">
                         <RxGithubLogo className="h-4 w-4" />
                         {stars !== null && <span>{stars}</span>}
                     </Link>
-                    <Link href="https://marketplace.visualstudio.com/items?itemName=RooVeterinaryInc.roo-cline" target="_blank" className="hidden items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 md:flex">
+                    <Link href={EXTERNAL_LINKS.MARKETPLACE} target="_blank" className="hidden items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 md:flex">
                         <VscVscode className="-mr-[2px] mt-[1px] h-4 w-4" />
                         <span>
                             Install <span className="font-black">&middot;</span>
@@ -54,7 +58,7 @@ export function NavBar({ stars, downloads }: NavBarProps) {
 
                 {/* Mobile Menu Button */}
                 <div className="flex gap-2 md:hidden">
-                    <Link href="https://github.com/RooVetGit/Roo-Code" target="_blank" className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+                    <Link href={EXTERNAL_LINKS.GITHUB} target="_blank" className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
                         {stars !== null && <span>{stars}</span>}
                         <RxGithubLogo className="h-4 w-4" />
                     </Link>
