@@ -26,7 +26,7 @@ export function NavBar({ stars, downloads }: NavBarProps) {
                     <ScrollButton targetId="features" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
                         Features
                     </ScrollButton>
-                    <ScrollButton targetId="testimonials" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
+                    <ScrollButton targetId="testimonials" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground max-lg:hidden">
                         Testimonials
                     </ScrollButton>
                     <ScrollButton targetId="faq" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
