@@ -2,6 +2,7 @@ import { Code } from "lucide-react";
 import { RxGithubLogo, RxDiscordLogo } from "react-icons/rx";
 import { FaReddit } from "react-icons/fa6";
 import { ScrollButton } from "@/components/ui/scroll-button";
+import { EXTERNAL_LINKS } from "@/lib/constants";
 
 export function Footer() {
     return (
@@ -15,15 +16,15 @@ export function Footer() {
                         </div>
                         <p className="max-w-md text-sm leading-6 text-muted-foreground md:pr-16 lg:pr-32">Empowering developers to build better software faster with AI-powered tools and insights.</p>
                         <div className="flex space-x-5">
-                            <a href="https://github.com/RooVetGit/Roo-Code" target="_blank" className="text-muted-foreground transition-colors hover:text-foreground">
+                            <a href={EXTERNAL_LINKS.GITHUB} target="_blank" className="text-muted-foreground transition-colors hover:text-foreground">
                                 <RxGithubLogo className="h-6 w-6" />
                                 <span className="sr-only">GitHub</span>
                             </a>
-                            <a href="https://discord.gg/roocode" target="_blank" className="text-muted-foreground transition-colors hover:text-foreground">
+                            <a href={EXTERNAL_LINKS.DISCORD} target="_blank" className="text-muted-foreground transition-colors hover:text-foreground">
                                 <RxDiscordLogo className="h-6 w-6" />
                                 <span className="sr-only">Discord</span>
                             </a>
-                            <a href="https://reddit.com/r/RooCode" target="_blank" className="text-muted-foreground transition-colors hover:text-foreground">
+                            <a href={EXTERNAL_LINKS.REDDIT} target="_blank" className="text-muted-foreground transition-colors hover:text-foreground">
                                 <FaReddit className="h-6 w-6" />
                                 <span className="sr-only">Reddit</span>
                             </a>
@@ -46,12 +47,12 @@ export function Footer() {
                                         </ScrollButton>
                                     </li>
                                     <li>
-                                        <a href="https://docs.roocode.com/community" target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.INTEGRATIONS} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Integrations
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://github.com/RooVetGit/Roo-Code/blob/main/CHANGELOG.md" target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.CHANGELOG} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Changelog
                                         </a>
                                     </li>
@@ -61,27 +62,27 @@ export function Footer() {
                                 <h3 className="text-sm font-semibold uppercase leading-6 text-foreground">Resources</h3>
                                 <ul className="mt-6 space-y-4">
                                     <li>
-                                        <a href="https://docs.roocode.com" target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.DOCUMENTATION} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Documentation
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://docs.roocode.com/tutorial-videos" target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.TUTORIALS} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Tutorials
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://github.com/RooVetGit/Roo-Code/discussions" target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.COMMUNITY} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Community
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://discord.gg/roocode" target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.DISCORD} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Discord
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://www.reddit.com/r/RooCode/" target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.REDDIT} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Reddit
                                         </a>
                                     </li>
@@ -93,12 +94,12 @@ export function Footer() {
                                 <h3 className="text-sm font-semibold uppercase leading-6 text-foreground">Support</h3>
                                 <ul className="mt-6 space-y-4">
                                     <li>
-                                        <a href="https://github.com/RooVetGit/Roo-Code/issues" target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.ISSUES} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Issues
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://github.com/RooVetGit/Roo-Code/discussions/categories/feature-requests" target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.FEATURE_REQUESTS} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Feature Requests
                                         </a>
                                     </li>
@@ -118,12 +119,12 @@ export function Footer() {
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://shard-dogwood-daf.notion.site/Join-Roo-Code-1b7fd1401b0a809e9e58eac91e352667" target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.CAREERS} target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Careers
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://github.com/RooVetGit/Roo-Code/blob/main/PRIVACY.md" target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.PRIVACY_POLICY} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Privacy Policy
                                         </a>
                                     </li>
