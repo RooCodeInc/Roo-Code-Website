@@ -15,6 +15,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" suppressHydrationWarning>
             <body className={inter.className}>
+                {/* google site name: https://developers.google.com/search/docs/appearance/site-names */}
+                <div itemScope itemType="https://schema.org/WebSite">
+                    <link itemProp="url" href="https://roocode.com" />
+                    <meta itemProp="name" content="Roo Code" />
+                </div>
                 <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
                     {children}
                 </ThemeProvider>
