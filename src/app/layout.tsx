@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { PostHogProvider } from "@/components/analytics/posthog-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,9 +21,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <link itemProp="url" href="https://roocode.com" />
                     <meta itemProp="name" content="Roo Code" />
                 </div>
-                <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-                    {children}
-                </ThemeProvider>
+                <PostHogProvider>
+                    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+                        {children}
+                    </ThemeProvider>
+                </PostHogProvider>
             </body>
         </html>
     );
