@@ -1,10 +1,30 @@
-import { Code } from "lucide-react";
+"use client";
+
+import { Code, ChevronDown } from "lucide-react";
 import { RxGithubLogo, RxDiscordLogo } from "react-icons/rx";
 import { FaReddit } from "react-icons/fa6";
 import { ScrollButton } from "@/components/ui/scroll-button";
 import { EXTERNAL_LINKS } from "@/lib/constants";
+import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 
 export function Footer() {
+    const [privacyDropdownOpen, setPrivacyDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setPrivacyDropdownOpen(false);
+            }
+        }
+        
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
     return (
         <footer className="border-t border-border bg-background">
             <div className="mx-auto max-w-7xl px-6 pb-6 pt-12 md:pb-8 md:pt-16 lg:px-8">
@@ -124,9 +144,39 @@ export function Footer() {
                                         </a>
                                     </li>
                                     <li>
-                                        <a href={EXTERNAL_LINKS.PRIVACY_POLICY} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
-                                            Privacy Policy
-                                        </a>
+                                        <div className="relative z-10" ref={dropdownRef}>
+                                            <button
+                                                onClick={() => setPrivacyDropdownOpen(!privacyDropdownOpen)}
+                                                className="flex items-center text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground"
+                                                aria-expanded={privacyDropdownOpen}
+                                                aria-haspopup="true"
+                                            >
+                                                Privacy Policy
+                                                <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${privacyDropdownOpen ? 'rotate-180' : ''}`} />
+                                            </button>
+                                            
+                                            {privacyDropdownOpen && (
+                                                <div className="absolute z-50 mt-2 w-48 origin-top-right rounded-md bg-background shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none left-0 md:right-0 md:left-auto border border-border">
+                                                    <div className="py-1">
+                                                        <a
+                                                            href={EXTERNAL_LINKS.PRIVACY_POLICY_EXTENSION}
+                                                            target="_blank"
+                                                            className="block px-4 py-2 text-sm text-muted-foreground hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-foreground"
+                                                            onClick={() => setPrivacyDropdownOpen(false)}
+                                                        >
+                                                            Extension
+                                                        </a>
+                                                        <Link
+                                                            href={EXTERNAL_LINKS.PRIVACY_POLICY_WEBSITE}
+                                                            className="block px-4 py-2 text-sm text-muted-foreground hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-foreground"
+                                                            onClick={() => setPrivacyDropdownOpen(false)}
+                                                        >
+                                                            Marketing Website
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
