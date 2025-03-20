@@ -62,6 +62,11 @@ export function Footer() {
                                         </ScrollButton>
                                     </li>
                                     <li>
+                                        <Link href="/enterprise" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                            Enterprise
+                                        </Link>
+                                    </li>
+                                    <li>
                                         <ScrollButton targetId="testimonials" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Testimonials
                                         </ScrollButton>
