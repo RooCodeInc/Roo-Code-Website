@@ -16,8 +16,6 @@ const contactFormSchema = z.object({
   formType: z.enum(["early-access", "demo"])
 })
 
-type ContactFormData = z.infer<typeof contactFormSchema>
-
 interface ContactFormProps {
   formType: "early-access" | "demo"
   buttonText: string
@@ -61,7 +59,6 @@ export function ContactForm({ formType, buttonText, buttonClassName }: ContactFo
       contactFormSchema.parse(data)
       
       // Submit form data to API
-      console.log("Frontend: Submitting form data:", data);
       try {
         const response = await fetch("/api/contact", {
           method: "POST",
@@ -70,34 +67,21 @@ export function ContactForm({ formType, buttonText, buttonClassName }: ContactFo
           },
           body: JSON.stringify(data),
         });
-
-        console.log("Frontend: API response status:", response.status);
         
         const responseData = await response.json();
-        console.log("Frontend: API response data:", responseData);
-        console.log("Frontend: Response data type:", typeof responseData);
-        console.log("Frontend: Response data keys:", Object.keys(responseData));
-        console.log("Frontend: Success property value:", responseData.success);
-        console.log("Frontend: Success property type:", typeof responseData.success);
 
         // Check if the response has a success property that is true
         if (responseData && responseData.success === true) {
-          console.log("Frontend: Success is true, setting success status");
           setSubmitStatus("success");
           // Reset form safely
           if (form) {
-            console.log("Frontend: Resetting form");
             form.reset();
-          } else {
-            console.log("Frontend: Form is null, cannot reset");
           }
         } else {
-          console.log("Frontend: Success is not true, setting error status");
-          console.log("Frontend: responseData:", JSON.stringify(responseData));
           setSubmitStatus("error");
         }
       } catch (error) {
-        console.error("Frontend: Error during fetch:", error);
+        console.error("Error submitting form:", error);
         setSubmitStatus("error");
       }
     } catch (error) {

@@ -13,23 +13,17 @@ const contactFormSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("API: Received contact form submission");
-    
     // Parse the request body
     const body = await request.json();
-    console.log("API: Request body:", body);
     
     // Validate the form data
     const validatedData = contactFormSchema.parse(body);
-    console.log("API: Validated data:", validatedData);
     
     // Format the data for Slack
     const slackMessage = formatSlackMessage(validatedData);
-    console.log("API: Formatted Slack message:", slackMessage);
     
     // Get the Slack webhook URL from environment variables
     const webhookUrl = process.env.SLACK_WEBHOOK_URL;
-    console.log("API: Webhook URL defined:", !!webhookUrl);
     
     if (!webhookUrl) {
       console.error("SLACK_WEBHOOK_URL is not defined in environment variables");
@@ -40,7 +34,6 @@ export async function POST(request: NextRequest) {
     }
     
     // Send the data to Slack
-    console.log("API: Sending data to Slack...");
     const slackResponse = await fetch(webhookUrl, {
       method: "POST",
       headers: {
@@ -48,8 +41,6 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify(slackMessage),
     });
-    
-    console.log("API: Slack response status:", slackResponse.status);
     
     if (!slackResponse.ok) {
       const errorText = await slackResponse.text();
@@ -59,8 +50,6 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
-    
-    console.log("API: Successfully sent message to Slack");
     
     // Return success response
     return NextResponse.json({ success: true });

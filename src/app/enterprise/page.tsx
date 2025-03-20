@@ -5,7 +5,6 @@ import { NavBar } from "@/components/chromes/nav-bar";
 import { Footer } from "@/components/chromes/footer";
 import { getGitHubStars, getVSCodeDownloads } from "@/lib/stats";
 import { Code, CheckCircle, Shield, Users, Zap, Workflow } from "lucide-react";
-import Link from "next/link";
 import { ContactForm } from "@/components/enterprise/contact-form";
 
 // invalidate cache when a request comes in, at most once every hour
@@ -93,7 +92,7 @@ export default async function EnterprisePage() {
                                 Empower Your Development Team
                             </h2>
                             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-                                Roo Code functions like an entire AI dev team embedded in your developers' IDE, ready to accelerate software delivery and improve code quality.
+                                Roo Code functions like an entire AI dev team embedded in your developers&apos; IDE, ready to accelerate software delivery and improve code quality.
                             </p>
                         </div>
 
@@ -283,7 +282,7 @@ export default async function EnterprisePage() {
                                         <svg className="h-5 w-5 text-red-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                         </svg>
-                                        <span>Can't execute commands or perform web actions</span>
+                                        <span>Can&apos;t execute commands or perform web actions</span>
                                     </li>
                                     <li className="flex items-start">
                                         <svg className="h-5 w-5 text-red-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -343,7 +342,7 @@ export default async function EnterprisePage() {
                                 <div className="rounded-lg border border-border bg-card p-6 text-center shadow-sm">
                                     <h3 className="text-xl font-bold mb-2">Become an Early Access Partner</h3>
                                     <p className="text-muted-foreground mb-4">
-                                        Collaborate in shaping Roo Code's enterprise solution.
+                                        Collaborate in shaping Roo Code&apos;s enterprise solution.
                                     </p>
                                     <ContactForm
                                         formType="early-access"
@@ -354,7 +353,7 @@ export default async function EnterprisePage() {
                                 <div className="rounded-lg border border-border bg-card p-6 text-center shadow-sm">
                                     <h3 className="text-xl font-bold mb-2">Request a Demo</h3>
                                     <p className="text-muted-foreground mb-4">
-                                        See Roo Code's enterprise capabilities in action.
+                                        See Roo Code&apos;s enterprise capabilities in action.
                                     </p>
                                     <ContactForm
                                         formType="demo"
