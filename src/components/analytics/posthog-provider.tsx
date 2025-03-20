@@ -3,12 +3,31 @@
 import { usePathname, useSearchParams } from 'next/navigation';
 import posthog from 'posthog-js';
 import { PostHogProvider as OriginalPostHogProvider } from 'posthog-js/react';
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 
-export function PostHogProvider({ children }: { children: React.ReactNode }) {
+// Create a separate component for analytics tracking that uses useSearchParams
+function PageViewTracker() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  // Track page views
+  useEffect(() => {
+    // Only track page views if PostHog is properly initialized
+    if (pathname && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
+      let url = window.origin + pathname;
+      if (searchParams && searchParams.toString()) {
+        url = url + `?${searchParams.toString()}`;
+      }
+      posthog.capture('$pageview', {
+        $current_url: url,
+      });
+    }
+  }, [pathname, searchParams]);
+
+  return null;
+}
+
+export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Initialize PostHog only on the client side
     if (typeof window !== 'undefined') {
@@ -50,19 +69,12 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
     // No explicit cleanup needed for posthog-js v1.231.0
   }, []);
 
-  // Track page views
-  useEffect(() => {
-    // Only track page views if PostHog is properly initialized
-    if (pathname && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
-      let url = window.origin + pathname;
-      if (searchParams && searchParams.toString()) {
-        url = url + `?${searchParams.toString()}`;
-      }
-      posthog.capture('$pageview', {
-        $current_url: url,
-      });
-    }
-  }, [pathname, searchParams]);
-
-  return <OriginalPostHogProvider client={posthog}>{children}</OriginalPostHogProvider>;
+  return (
+    <OriginalPostHogProvider client={posthog}>
+      <Suspense fallback={null}>
+        <PageViewTracker />
+      </Suspense>
+      {children}
+    </OriginalPostHogProvider>
+  );
 }
