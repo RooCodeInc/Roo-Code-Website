@@ -1,14 +1,32 @@
 import posthog from 'posthog-js';
 
 /**
+ * Checks if analytics are enabled (client-side and API key exists)
+ * @returns Boolean indicating if analytics are enabled
+ */
+const isAnalyticsEnabled = (): boolean => {
+  return typeof window !== 'undefined' && !!process.env.NEXT_PUBLIC_POSTHOG_KEY;
+};
+
+/**
+ * Executes a callback function only if analytics are enabled
+ * @param callback The function to execute if analytics are enabled
+ * @returns The result of the callback, or undefined if analytics are disabled
+ */
+const executeIfAnalyticsEnabled = <T>(callback: () => T): T | undefined => {
+  if (isAnalyticsEnabled()) {
+    return callback();
+  }
+  return undefined;
+};
+
+/**
  * Track a custom event with optional properties
  * @param eventName The name of the event to track
  * @param properties Optional properties to include with the event
  */
 export const trackEvent = (eventName: string, properties?: Record<string, any>) => {
-  if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
-    posthog.capture(eventName, properties);
-  }
+  executeIfAnalyticsEnabled(() => posthog.capture(eventName, properties));
 };
 
 /**
@@ -17,18 +35,14 @@ export const trackEvent = (eventName: string, properties?: Record<string, any>) 
  * @param properties Optional user properties to set
  */
 export const identifyUser = (userId: string, properties?: Record<string, any>) => {
-  if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
-    posthog.identify(userId, properties);
-  }
+  executeIfAnalyticsEnabled(() => posthog.identify(userId, properties));
 };
 
 /**
  * Reset the current user's identity (typically used on logout)
  */
 export const resetUser = () => {
-  if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
-    posthog.reset();
-  }
+  executeIfAnalyticsEnabled(() => posthog.reset());
 };
 
 /**
@@ -36,13 +50,13 @@ export const resetUser = () => {
  * @param enabled Whether session recording should be enabled
  */
 export const setSessionRecording = (enabled: boolean) => {
-  if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
+  executeIfAnalyticsEnabled(() => {
     if (enabled) {
       posthog.startSessionRecording();
     } else {
       posthog.stopSessionRecording();
     }
-  }
+  });
 };
 
 /**
@@ -50,26 +64,19 @@ export const setSessionRecording = (enabled: boolean) => {
  * @returns Boolean indicating if the user has opted out
  */
 export const hasOptedOut = (): boolean => {
-  if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
-    return posthog.has_opted_out_capturing();
-  }
-  return false;
+  return executeIfAnalyticsEnabled(() => posthog.has_opted_out_capturing()) ?? false;
 };
 
 /**
  * Opt out of tracking for the current user
  */
 export const optOut = () => {
-  if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
-    posthog.opt_out_capturing();
-  }
+  executeIfAnalyticsEnabled(() => posthog.opt_out_capturing());
 };
 
 /**
  * Opt in to tracking for the current user
  */
 export const optIn = () => {
-  if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
-    posthog.opt_in_capturing();
-  }
+  executeIfAnalyticsEnabled(() => posthog.opt_in_capturing());
 };
