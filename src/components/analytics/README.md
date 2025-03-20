@@ -81,10 +81,12 @@ optIn();
 
 The implementation uses the following environment variables:
 
-- `NEXT_PUBLIC_POSTHOG_KEY`: Your PostHog API key
-- `NEXT_PUBLIC_POSTHOG_HOST`: Your PostHog host URL
+- `NEXT_PUBLIC_POSTHOG_KEY`: Your PostHog API key (required)
+- `NEXT_PUBLIC_POSTHOG_HOST`: Your PostHog host URL (optional, defaults to 'https://us.i.posthog.com')
 
-For development, these are hardcoded in the provider component. For production, you should set these environment variables in your deployment environment.
+These environment variables should be set in a `.env` file at the root of the project. A `.env.example` file is provided as a template.
+
+If the `NEXT_PUBLIC_POSTHOG_KEY` is not set, analytics will be disabled and a warning will be logged to the console.
 
 ## PostHog Dashboard
 

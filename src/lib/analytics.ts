@@ -6,7 +6,7 @@ import posthog from 'posthog-js';
  * @param properties Optional properties to include with the event
  */
 export const trackEvent = (eventName: string, properties?: Record<string, any>) => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
     posthog.capture(eventName, properties);
   }
 };
@@ -17,7 +17,7 @@ export const trackEvent = (eventName: string, properties?: Record<string, any>) 
  * @param properties Optional user properties to set
  */
 export const identifyUser = (userId: string, properties?: Record<string, any>) => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
     posthog.identify(userId, properties);
   }
 };
@@ -26,7 +26,7 @@ export const identifyUser = (userId: string, properties?: Record<string, any>) =
  * Reset the current user's identity (typically used on logout)
  */
 export const resetUser = () => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
     posthog.reset();
   }
 };
@@ -36,7 +36,7 @@ export const resetUser = () => {
  * @param enabled Whether session recording should be enabled
  */
 export const setSessionRecording = (enabled: boolean) => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
     if (enabled) {
       posthog.startSessionRecording();
     } else {
@@ -50,7 +50,7 @@ export const setSessionRecording = (enabled: boolean) => {
  * @returns Boolean indicating if the user has opted out
  */
 export const hasOptedOut = (): boolean => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
     return posthog.has_opted_out_capturing();
   }
   return false;
@@ -60,7 +60,7 @@ export const hasOptedOut = (): boolean => {
  * Opt out of tracking for the current user
  */
 export const optOut = () => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
     posthog.opt_out_capturing();
   }
 };
@@ -69,7 +69,7 @@ export const optOut = () => {
  * Opt in to tracking for the current user
  */
 export const optIn = () => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
     posthog.opt_in_capturing();
   }
 };

@@ -12,10 +12,29 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Initialize PostHog only on the client side
     if (typeof window !== 'undefined') {
+      const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+      const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST;
+      
+      // Check if environment variables are set
+      if (!posthogKey) {
+        console.warn(
+          'PostHog API key is missing. Analytics will be disabled. ' +
+          'Please set NEXT_PUBLIC_POSTHOG_KEY in your .env file.'
+        );
+        return;
+      }
+      
+      if (!posthogHost) {
+        console.warn(
+          'PostHog host URL is missing. Using default host. ' +
+          'Please set NEXT_PUBLIC_POSTHOG_HOST in your .env file.'
+        );
+      }
+      
       posthog.init(
-        process.env.NEXT_PUBLIC_POSTHOG_KEY || 'phc_eB6GssOUUixeMfOhTWAY7d1zFKB9w89lW9IRt6peOdr',
+        posthogKey,
         {
-          api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com',
+          api_host: posthogHost || 'https://us.i.posthog.com',
           capture_pageview: false, // We'll handle this manually
           loaded: (posthogInstance) => {
             if (process.env.NODE_ENV === 'development') {
@@ -33,7 +52,8 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 
   // Track page views
   useEffect(() => {
-    if (pathname) {
+    // Only track page views if PostHog is properly initialized
+    if (pathname && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
       let url = window.origin + pathname;
       if (searchParams && searchParams.toString()) {
         url = url + `?${searchParams.toString()}`;
