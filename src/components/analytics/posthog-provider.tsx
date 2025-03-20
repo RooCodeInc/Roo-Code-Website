@@ -14,7 +14,7 @@ function PageViewTracker() {
   useEffect(() => {
     // Only track page views if PostHog is properly initialized
     if (pathname && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
-      let url = window.origin + pathname;
+      let url = window.location.origin + pathname;
       if (searchParams && searchParams.toString()) {
         url = url + `?${searchParams.toString()}`;
       }
@@ -22,7 +22,7 @@ function PageViewTracker() {
         $current_url: url,
       });
     }
-  }, [pathname, searchParams]);
+  }, [pathname, searchParams.toString()]);
 
   return null;
 }

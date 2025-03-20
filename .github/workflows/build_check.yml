@@ -47,3 +47,6 @@ jobs:
       
     - name: Build site
       run: pnpm build
+      env:
+        NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
+        NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
