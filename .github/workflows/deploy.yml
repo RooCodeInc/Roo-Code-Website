@@ -57,6 +57,9 @@ jobs:
       
       - name: Build with Next.js
         run: pnpm build
+        env:
+          NEXT_PUBLIC_POSTHOG_KEY: ${{ secrets.NEXT_PUBLIC_POSTHOG_KEY }}
+          NEXT_PUBLIC_POSTHOG_HOST: ${{ secrets.NEXT_PUBLIC_POSTHOG_HOST }}
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

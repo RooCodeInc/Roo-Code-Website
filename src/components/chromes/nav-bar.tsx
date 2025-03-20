@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { ScrollButton } from "@/components/ui/scroll-button";
 import { Code } from "lucide-react";
