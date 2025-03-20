@@ -25,7 +25,7 @@ const executeIfAnalyticsEnabled = <T>(callback: () => T): T | undefined => {
  * @param eventName The name of the event to track
  * @param properties Optional properties to include with the event
  */
-export const trackEvent = (eventName: string, properties?: Record<string, any>) => {
+export const trackEvent = (eventName: string, properties?: Record<string, unknown>) => {
   executeIfAnalyticsEnabled(() => posthog.capture(eventName, properties));
 };
 
@@ -34,7 +34,7 @@ export const trackEvent = (eventName: string, properties?: Record<string, any>) 
  * @param userId The unique identifier for the user
  * @param properties Optional user properties to set
  */
-export const identifyUser = (userId: string, properties?: Record<string, any>) => {
+export const identifyUser = (userId: string, properties?: Record<string, unknown>) => {
   executeIfAnalyticsEnabled(() => posthog.identify(userId, properties));
 };
 

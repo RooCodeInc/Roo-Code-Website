@@ -23,7 +23,7 @@ export default function PrivacyPolicyPage() {
                             Roo Code respects your privacy and is committed to being transparent about how data is collected and used on our marketing landing page. This policy focuses on data handling for the Roo Code marketing website. For details on how your data is handled within the Roo Code extension itself, please refer to our separate <a href="https://github.com/RooVetGit/Roo-Code/blob/main/PRIVACY.md" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Roo Code Extension Privacy Policy</a>.
                         </p>
 
-                        <h2 className="text-2xl font-bold mt-8">Where Your Data Goes (And Where It Doesn't)</h2>
+                        <h2 className="text-2xl font-bold mt-8">Where Your Data Goes (And Where It Doesn&apos;t)</h2>
                         
                         <h3 className="text-xl font-bold mt-6">Website Analytics & Tracking</h3>
                         <ul>
@@ -41,7 +41,7 @@ export default function PrivacyPolicyPage() {
                         <h3 className="text-xl font-bold mt-6">Forms & Voluntary Submissions</h3>
                         <ul>
                             <li>If you submit your email or other personal data on our landing page (for example, to receive updates or join a waiting list), we collect that information voluntarily provided by you.</li>
-                            <li>We do not share or sell this data to third parties for their own marketing purposes. It is used only to communicate with you about Roo Code, respond to inquiries, or send updates you've requested.</li>
+                            <li>We do not share or sell this data to third parties for their own marketing purposes. It is used only to communicate with you about Roo Code, respond to inquiries, or send updates you&apos;ve requested.</li>
                         </ul>
 
                         <h3 className="text-xl font-bold mt-6">Third-Party Integrations</h3>
@@ -77,7 +77,7 @@ export default function PrivacyPolicyPage() {
 
                         <h3 className="text-xl font-bold mt-6">Request Deletion</h3>
                         <ul>
-                            <li>You may request the deletion of any personal data you've provided through our marketing forms by reaching out to us at <a href="mailto:support@roocode.com" className="text-primary hover:underline">support@roocode.com</a>.</li>
+                            <li>You may request the deletion of any personal data you&apos;ve provided through our marketing forms by reaching out to us at <a href="mailto:support@roocode.com" className="text-primary hover:underline">support@roocode.com</a>.</li>
                         </ul>
 
                         <h2 className="text-2xl font-bold mt-8">Security & Updates</h2>
