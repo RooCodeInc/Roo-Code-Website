@@ -36,15 +36,15 @@ export function Footer() {
                         </div>
                         <p className="max-w-md text-sm leading-6 text-muted-foreground md:pr-16 lg:pr-32">Empowering developers to build better software faster with AI-powered tools and insights.</p>
                         <div className="flex space-x-5">
-                            <a href={EXTERNAL_LINKS.GITHUB} target="_blank" className="text-muted-foreground transition-colors hover:text-foreground">
+                            <a href={EXTERNAL_LINKS.GITHUB} target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-foreground">
                                 <RxGithubLogo className="h-6 w-6" />
                                 <span className="sr-only">GitHub</span>
                             </a>
-                            <a href={EXTERNAL_LINKS.DISCORD} target="_blank" className="text-muted-foreground transition-colors hover:text-foreground">
+                            <a href={EXTERNAL_LINKS.DISCORD} target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-foreground">
                                 <RxDiscordLogo className="h-6 w-6" />
                                 <span className="sr-only">Discord</span>
                             </a>
-                            <a href={EXTERNAL_LINKS.REDDIT} target="_blank" className="text-muted-foreground transition-colors hover:text-foreground">
+                            <a href={EXTERNAL_LINKS.REDDIT} target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-foreground">
                                 <FaReddit className="h-6 w-6" />
                                 <span className="sr-only">Reddit</span>
                             </a>
@@ -67,12 +67,12 @@ export function Footer() {
                                         </ScrollButton>
                                     </li>
                                     <li>
-                                        <a href={EXTERNAL_LINKS.INTEGRATIONS} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.INTEGRATIONS} target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Integrations
                                         </a>
                                     </li>
                                     <li>
-                                        <a href={EXTERNAL_LINKS.CHANGELOG} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.CHANGELOG} target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Changelog
                                         </a>
                                     </li>
@@ -82,27 +82,27 @@ export function Footer() {
                                 <h3 className="text-sm font-semibold uppercase leading-6 text-foreground">Resources</h3>
                                 <ul className="mt-6 space-y-4">
                                     <li>
-                                        <a href={EXTERNAL_LINKS.DOCUMENTATION} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.DOCUMENTATION} target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Documentation
                                         </a>
                                     </li>
                                     <li>
-                                        <a href={EXTERNAL_LINKS.TUTORIALS} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.TUTORIALS} target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Tutorials
                                         </a>
                                     </li>
                                     <li>
-                                        <a href={EXTERNAL_LINKS.COMMUNITY} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.COMMUNITY} target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Community
                                         </a>
                                     </li>
                                     <li>
-                                        <a href={EXTERNAL_LINKS.DISCORD} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.DISCORD} target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Discord
                                         </a>
                                     </li>
                                     <li>
-                                        <a href={EXTERNAL_LINKS.REDDIT} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.REDDIT} target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Reddit
                                         </a>
                                     </li>
@@ -114,12 +114,12 @@ export function Footer() {
                                 <h3 className="text-sm font-semibold uppercase leading-6 text-foreground">Support</h3>
                                 <ul className="mt-6 space-y-4">
                                     <li>
-                                        <a href={EXTERNAL_LINKS.ISSUES} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.ISSUES} target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Issues
                                         </a>
                                     </li>
                                     <li>
-                                        <a href={EXTERNAL_LINKS.FEATURE_REQUESTS} target="_blank" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+                                        <a href={EXTERNAL_LINKS.FEATURE_REQUESTS} target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
                                             Feature Requests
                                         </a>
                                     </li>
@@ -161,6 +161,7 @@ export function Footer() {
                                                         <a
                                                             href={EXTERNAL_LINKS.PRIVACY_POLICY_EXTENSION}
                                                             target="_blank"
+                                                            rel="noopener noreferrer"
                                                             className="block px-4 py-2 text-sm text-muted-foreground hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-foreground"
                                                             onClick={() => setPrivacyDropdownOpen(false)}
                                                         >
