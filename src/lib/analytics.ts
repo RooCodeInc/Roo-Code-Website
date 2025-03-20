@@ -15,7 +15,7 @@ const isAnalyticsEnabled = (): boolean => {
  */
 const executeIfAnalyticsEnabled = <T>(callback: () => T): T | undefined => {
   if (isAnalyticsEnabled()) {
-    return callback();
+    try { return callback(); } catch (error) { console.error('Error in PostHog callback:', error); }
   }
   return undefined;
 };
