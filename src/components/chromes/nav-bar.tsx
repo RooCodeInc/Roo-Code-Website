@@ -7,18 +7,14 @@ import ThemeToggle from "@/components/chromes/theme-toggle";
 import { RxGithubLogo } from "react-icons/rx";
 import { VscVscode } from "react-icons/vsc";
 import { EXTERNAL_LINKS } from "@/lib/constants";
-import { useTheme } from "next-themes";
+import { useLogoSrc } from "@/lib/hooks/useLogoSrc";
 
 interface NavBarProps {
     stars: string | null;
     downloads: string | null;
 }
 export function NavBar({ stars, downloads }: NavBarProps) {
-    const { resolvedTheme } = useTheme();
-    // Default to white logo if theme is undefined or dark
-    const logoSrc = resolvedTheme === 'light'
-        ? '/Roo-Code-Logo-Horiz-blk.svg'
-        : '/Roo-Code-Logo-Horiz-white.svg';
+    const logoSrc = useLogoSrc();
 
     return (
         <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">

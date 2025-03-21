@@ -8,16 +8,12 @@ import { EXTERNAL_LINKS } from "@/lib/constants";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useTheme } from "next-themes";
+import { useLogoSrc } from "@/lib/hooks/useLogoSrc";
 
 export function Footer() {
     const [privacyDropdownOpen, setPrivacyDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const { resolvedTheme } = useTheme();
-    // Default to white logo if theme is undefined or dark
-    const logoSrc = resolvedTheme === 'light'
-        ? '/Roo-Code-Logo-Horiz-blk.svg'
-        : '/Roo-Code-Logo-Horiz-white.svg';
+    const logoSrc = useLogoSrc();
 
     // Close dropdown when clicking outside
     useEffect(() => {
