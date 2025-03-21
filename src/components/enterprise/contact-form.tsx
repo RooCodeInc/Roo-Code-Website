@@ -13,7 +13,8 @@ const contactFormSchema = z.object({
   email: z.string().email("Invalid email address"),
   website: z.string().url("Invalid website URL").or(z.string().length(0)),
   engineerCount: z.enum(["1-10", "11-50", "51-200", "201-500", "501-1000", "1000+"]),
-  formType: z.enum(["early-access", "demo"])
+  formType: z.enum(["early-access", "demo"]),
+  _honeypot: z.string().optional()
 })
 
 interface ContactFormProps {
@@ -37,6 +38,15 @@ export function ContactForm({ formType, buttonText, buttonClassName }: ContactFo
     ? "Fill out the form below to collaborate in shaping Roo Code's enterprise solution."
     : "Fill out the form below to see Roo Code's enterprise capabilities in action."
 
+  // Get Basin endpoint from environment variable
+  // This should be set in .env.local as NEXT_PUBLIC_BASIN_ENDPOINT="https://usebasin.com/f/your-form-id"
+  const BASIN_ENDPOINT = process.env.NEXT_PUBLIC_BASIN_ENDPOINT || "";
+  
+  // Check if Basin endpoint is configured
+  if (!BASIN_ENDPOINT) {
+    console.warn("NEXT_PUBLIC_BASIN_ENDPOINT is not configured. Form submissions will not work.");
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
@@ -45,39 +55,67 @@ export function ContactForm({ formType, buttonText, buttonClassName }: ContactFo
 
     const form = e.currentTarget
     const formData = new FormData(form)
+    
+    // Create a data object for validation and submission
     const data = {
       name: formData.get("name") as string,
       company: formData.get("company") as string,
       email: formData.get("email") as string,
       website: formData.get("website") as string,
       engineerCount: formData.get("engineerCount") as string,
-      formType
+      formType,
+      // Include honeypot field for spam protection
+      _honeypot: formData.get("_honeypot") as string
     }
 
-    // Validate form data
+    // Validate form data on client side
     try {
       contactFormSchema.parse(data)
       
-      // Submit form data to API
+      // Submit data to Basin
       try {
-        const response = await fetch("/api/contact", {
+        const response = await fetch(BASIN_ENDPOINT, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Accept": "application/json"
           },
-          body: JSON.stringify(data),
+          mode: "cors", // Ensure proper CORS handling
+          body: JSON.stringify(data)
         });
         
-        const responseData = await response.json();
-
-        // Check if the response has a success property that is true
-        if (responseData && responseData.success === true) {
-          setSubmitStatus("success");
-          // Reset form safely
-          if (form) {
-            form.reset();
+        // Basin returns a 200 status code on success
+        if (response.ok) {
+          try {
+            const responseData = await response.json();
+            
+            // Basin JSON API typically returns a 'status' property of 'success' when submission succeeds
+            if (responseData && (responseData.success === true || responseData.status === 'success')) {
+              setSubmitStatus("success");
+              // Reset form safely
+              if (form) {
+                form.reset();
+              }
+            } else {
+              console.error("Basin error:", responseData);
+              setSubmitStatus("error");
+            }
+          } catch (jsonError) {
+            // In case response parsing fails but status was OK, assume success
+            console.error("Error parsing JSON response:", jsonError);
+            setSubmitStatus("success");
+            if (form) {
+              form.reset();
+            }
           }
         } else {
+          // Handle error response from Basin (4xx or 5xx)
+          try {
+            const errorData = await response.json();
+            console.error("Basin API error:", response.status, errorData);
+          } catch {
+            console.error("Basin returned error status:", response.status);
+          }
           setSubmitStatus("error");
         }
       } catch (error) {
@@ -132,7 +170,9 @@ export function ContactForm({ formType, buttonText, buttonClassName }: ContactFo
             </Button>
           </div>
         ) : (
-          <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-4" data-basin-form>
+            {/* Basin honeypot field for spam protection - should remain empty and hidden */}
+            <input type="text" name="_honeypot" className="hidden" style={{ display: 'none' }} />
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium">
                 Name <span className="text-red-500">*</span>
