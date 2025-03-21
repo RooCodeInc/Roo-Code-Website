@@ -1,26 +1,33 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ScrollButton } from "@/components/ui/scroll-button";
-import { Code } from "lucide-react";
 import ThemeToggle from "@/components/chromes/theme-toggle";
 import { RxGithubLogo } from "react-icons/rx";
 import { VscVscode } from "react-icons/vsc";
 import { EXTERNAL_LINKS } from "@/lib/constants";
+import { useLogoSrc } from "@/lib/hooks/useLogoSrc";
 
 interface NavBarProps {
     stars: string | null;
     downloads: string | null;
 }
-
 export function NavBar({ stars, downloads }: NavBarProps) {
+    const logoSrc = useLogoSrc();
+
     return (
         <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
             <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center">
-                    <Link href="/" className="flex items-center space-x-2">
-                        <Code className="h-8 w-8 text-foreground" />
-                        <span className="text-xl font-bold">Roo Code</span>
+                    <Link href="/" className="flex items-center">
+                        <Image
+                            src={logoSrc}
+                            alt="Roo Code Logo"
+                            width={120}
+                            height={40}
+                            className="h-8 w-auto"
+                        />
                     </Link>
                 </div>
 
