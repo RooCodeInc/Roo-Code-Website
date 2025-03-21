@@ -1,16 +1,23 @@
 "use client";
 
-import { Code, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { RxGithubLogo, RxDiscordLogo } from "react-icons/rx";
 import { FaReddit } from "react-icons/fa6";
 import { ScrollButton } from "@/components/ui/scroll-button";
 import { EXTERNAL_LINKS } from "@/lib/constants";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { useTheme } from "next-themes";
 
 export function Footer() {
     const [privacyDropdownOpen, setPrivacyDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const { resolvedTheme } = useTheme();
+    // Default to white logo if theme is undefined or dark
+    const logoSrc = resolvedTheme === 'light'
+        ? '/Roo-Code-Logo-Horiz-blk.svg'
+        : '/Roo-Code-Logo-Horiz-white.svg';
 
     // Close dropdown when clicking outside
     useEffect(() => {
@@ -30,9 +37,14 @@ export function Footer() {
             <div className="mx-auto max-w-7xl px-6 pb-6 pt-12 md:pb-8 md:pt-16 lg:px-8">
                 <div className="xl:grid xl:grid-cols-3 xl:gap-8">
                     <div className="space-y-8">
-                        <div className="flex items-center space-x-2">
-                            <Code className="h-6 w-6 text-foreground" />
-                            <span className="text-lg font-bold text-foreground">Roo Code</span>
+                        <div className="flex items-center">
+                            <Image
+                                src={logoSrc}
+                                alt="Roo Code Logo"
+                                width={120}
+                                height={40}
+                                className="h-6 w-auto"
+                            />
                         </div>
                         <p className="max-w-md text-sm leading-6 text-muted-foreground md:pr-16 lg:pr-32">Empowering developers to build better software faster with AI-powered tools and insights.</p>
                         <div className="flex space-x-5">
