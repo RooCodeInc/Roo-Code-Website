@@ -35,6 +35,9 @@ export function NavBar({ stars, downloads }: NavBarProps) {
                     <ScrollButton targetId="faq" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
                         FAQ
                     </ScrollButton>
+                    <Link href="/enterprise" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
+                        Enterprise
+                    </Link>
                     <a href={EXTERNAL_LINKS.DOCUMENTATION} target="_blank" className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
                         Documentation
                     </a>
