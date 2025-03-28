@@ -81,6 +81,9 @@ const config: Config = {
                 "fade-out": "fade-out 0.5s ease-out",
                 "pulse-glow": "pulse-glow 3s infinite",
             },
+            screens: {
+                xs: "420px",
+            },
         },
     },
     plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],

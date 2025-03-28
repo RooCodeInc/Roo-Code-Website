@@ -4,7 +4,7 @@ import { ChevronDown } from "lucide-react";
 import { RxGithubLogo, RxDiscordLogo } from "react-icons/rx";
 import { FaReddit } from "react-icons/fa6";
 import { ScrollButton } from "@/components/ui/scroll-button";
-import { EXTERNAL_LINKS } from "@/lib/constants";
+import { EXTERNAL_LINKS, INTERNAL_LINKS } from "@/lib/constants";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -22,7 +22,7 @@ export function Footer() {
                 setPrivacyDropdownOpen(false);
             }
         }
-        
+
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
@@ -34,13 +34,7 @@ export function Footer() {
                 <div className="xl:grid xl:grid-cols-3 xl:gap-8">
                     <div className="space-y-8">
                         <div className="flex items-center">
-                            <Image
-                                src={logoSrc}
-                                alt="Roo Code Logo"
-                                width={120}
-                                height={40}
-                                className="h-6 w-auto"
-                            />
+                            <Image src={logoSrc} alt="Roo Code Logo" width={120} height={40} className="h-6 w-auto" />
                         </div>
                         <p className="max-w-md text-sm leading-6 text-muted-foreground md:pr-16 lg:pr-32">Empowering developers to build better software faster with AI-powered tools and insights.</p>
                         <div className="flex space-x-5">
@@ -158,33 +152,20 @@ export function Footer() {
                                     </li>
                                     <li>
                                         <div className="relative z-10" ref={dropdownRef}>
-                                            <button
-                                                onClick={() => setPrivacyDropdownOpen(!privacyDropdownOpen)}
-                                                className="flex items-center text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground"
-                                                aria-expanded={privacyDropdownOpen}
-                                                aria-haspopup="true"
-                                            >
-                                                Privacy Policy
-                                                <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${privacyDropdownOpen ? 'rotate-180' : ''}`} />
+                                            <button onClick={() => setPrivacyDropdownOpen(!privacyDropdownOpen)} className="flex items-center text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground" aria-expanded={privacyDropdownOpen} aria-haspopup="true">
+                                                <span>
+                                                    Privacy <span className="max-[320px]:hidden">Policy</span>
+                                                </span>
+                                                <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${privacyDropdownOpen ? "rotate-180" : ""}`} />
                                             </button>
-                                            
+
                                             {privacyDropdownOpen && (
-                                                <div className="absolute z-50 mt-2 w-48 origin-top-right rounded-md bg-background shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none left-0 md:right-0 md:left-auto border border-border">
-                                                    <div className="py-1">
-                                                        <a
-                                                            href={EXTERNAL_LINKS.PRIVACY_POLICY_EXTENSION}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="block px-4 py-2 text-sm text-muted-foreground hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-foreground"
-                                                            onClick={() => setPrivacyDropdownOpen(false)}
-                                                        >
+                                                <div className="max-xs:right-0 xs:left-0 max-xs:origin-top-right absolute z-50 mt-2 w-44 origin-top-left scale-95 rounded-md border border-border bg-background shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-100 ease-out data-[state=open]:scale-100">
+                                                    <div className="flex flex-col gap-1 p-2 text-sm text-muted-foreground">
+                                                        <a href={EXTERNAL_LINKS.PRIVACY_POLICY_EXTENSION} target="_blank" rel="noopener noreferrer" onClick={() => setPrivacyDropdownOpen(false)} className="rounded-md px-3 py-2 transition-colors hover:bg-accent/50 hover:text-foreground">
                                                             Extension
                                                         </a>
-                                                        <Link
-                                                            href={EXTERNAL_LINKS.PRIVACY_POLICY_WEBSITE}
-                                                            className="block px-4 py-2 text-sm text-muted-foreground hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-foreground"
-                                                            onClick={() => setPrivacyDropdownOpen(false)}
-                                                        >
+                                                        <Link href={INTERNAL_LINKS.PRIVACY_POLICY_WEBSITE} onClick={() => setPrivacyDropdownOpen(false)} className="rounded-md px-3 py-2 transition-colors hover:bg-accent/50 hover:text-foreground">
                                                             Marketing Website
                                                         </Link>
                                                     </div>
