@@ -84,7 +84,7 @@ export function NavBar({ stars, downloads }: NavBarProps) {
                         {downloads !== null && <span>{downloads}</span>}
                     </Link>
                     <ThemeToggle />
-                    <button
+                    <button aria-expanded={isMenuOpen}
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
                         className="text-muted-foreground hover:text-foreground"
                         aria-label="Toggle mobile menu"
@@ -98,7 +98,6 @@ export function NavBar({ stars, downloads }: NavBarProps) {
                 </div>
             </div>
 
-            {/* Mobile Menu Panel */}
             {/* Mobile Menu Panel */}
             <div className={`absolute left-0 right-0 top-16 z-50 transform border-b border-border bg-background shadow-lg backdrop-blur-none transition-all duration-200 md:hidden ${isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0 pointer-events-none'}`}>
                 <nav className="flex flex-col py-2">
