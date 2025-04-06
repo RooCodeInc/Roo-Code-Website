@@ -1,46 +1,71 @@
 "use client"
 
 import { useMemo } from "react"
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 
 import { type Run } from "@/db"
 import { formatTokens } from "@/lib/format-tokens"
 import { OpenRouterModel } from "@/lib/hooks/use-open-router-models"
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartConfig } from "@/components/ui/chart"
+import { useTheme } from "next-themes"
 
-import { Platform } from "./platform"
+const chartConfig = {
+	model: { label: "Model" },
+	score: { label: "Score" },
+} satisfies ChartConfig
 
 export function Evals({ runs }: { runs: (Run & { score: number; openRouterModel?: OpenRouterModel })[] }) {
-	const [first, second, third] = runs
+	const { theme } = useTheme()
 
-	// https://dribbble.com/shots/2277946
-	const colors = useMemo(() => ["#1f242dff", "#1f242dcc", "#1f242d99", "#1f242d66", "#1f242d33", "#1f242d11"], [])
+	const data = useMemo(
+		() =>
+			runs.slice(0, 5).map((run) => ({
+				model: run.openRouterModel?.name ?? run.model,
+				score: run.score,
+			})),
+		[runs],
+	)
 
 	return (
-		<div className="mx-auto my-16 max-w-screen-lg">
-			<div className="flex flex-col gap-10">
-				{first && second && third && (
-					<div className="mt-16 hidden md:block">
-						<div className="podium">
-							<Platform className="mt-6" rank={2}>
-								{second.openRouterModel?.name ?? second.model}
-							</Platform>
-							<Platform className="mt-0" rank={1}>
-								{first.openRouterModel?.name ?? first.model}
-							</Platform>
-							<Platform className="mt-8" rank={3}>
-								{third.openRouterModel?.name ?? third.model}
-							</Platform>
-						</div>
+		<div className="mx-auto my-4 flex max-w-screen-lg flex-col gap-4">
+			<div>
+				<div className="p-2 text-lg font-medium">
+					<div>Top Performing Models</div>
+					<div className="text-sm text-muted-foreground">
+						Looking for the best model to pair with Roo Code? Here&apos;s what the data shows.
 					</div>
-				)}
+				</div>
+				<ChartContainer config={chartConfig} className="h-[150px] w-full">
+					<BarChart accessibilityLayer data={data}>
+						<CartesianGrid vertical={false} />
+						<XAxis
+							dataKey="model"
+							tickLine={false}
+							tickFormatter={(value) => value.split(": ")[1] ?? value}
+						/>
+						<ChartTooltip content={<ChartTooltipContent />} />
+						<Bar
+							dataKey="score"
+							fill={theme === "dark" ? "hsl(var(--chart-1))" : "hsl(var(--chart-5))"}
+							radius={2}
+						/>
+					</BarChart>
+				</ChartContainer>
+			</div>
+			<div>
+				<div className="p-2 text-lg font-medium">
+					<div>Eval Scores</div>
+					<div className="text-sm text-muted-foreground">
+						Each model is tested using a suite of hundreds of exercises across 5 programming languages with
+						varying difficulty.
+					</div>
+				</div>
 				<div className="flex flex-col border">
 					{runs.map((run, index) => (
 						<div key={run.id} className="relative h-20">
 							<div
-								className="absolute h-full"
-								style={{
-									backgroundColor: colors[index],
-									width: `${run.score}%`,
-								}}
+								className="absolute h-full bg-chart-5/10 dark:bg-chart-1/10"
+								style={{ width: `${run.score}%` }}
 							/>
 							<div className="absolute inset-0 p-4">
 								<div className="flex h-full items-center justify-between">
