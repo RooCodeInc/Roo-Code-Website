@@ -225,35 +225,35 @@ export function AnimatedBackground() {
 			connectParticles()
 		}
 
-		// animation loop
+		// Animation loop.
 		let animationId: number
 
-		// target position for smooth following
+		// Target position for smooth following.
 		let targetX = canvas.width * 0.2
 		let targetY = canvas.height * 0.3
-		const moveSpeed = 0.05 // adjust this value to control movement speed (0-1)
+		const moveSpeed = 0.05 // Adjust this value to control movement speed (0-1).
 
-		// move gradient points with mouse
+		// Move gradient points with mouse.
 		const handleMouseMove = (e: MouseEvent) => {
 			targetX = e.clientX
 			targetY = e.clientY
 		}
 
-		// update gradient point position in animation loop
+		// Update gradient point position in animation loop.
 		function updateGradientPosition() {
 			if (!canvas) throw new Error("Canvas is null (not initialized?)")
 
-			// calculate direction vector
-			const dx = targetX - gradientPoints[0].x
-			const dy = targetY - gradientPoints[0].y
+			// Calculate direction vector.
+			const dx = targetX - gradientPoints[0]!.x
+			const dy = targetY - gradientPoints[0]!.y
 
-			// smooth movement using linear interpolation
-			gradientPoints[0].x += dx * moveSpeed
-			gradientPoints[0].y += dy * moveSpeed
+			// Smooth movement using linear interpolation.
+			gradientPoints[0]!.x += dx * moveSpeed
+			gradientPoints[0]!.y += dy * moveSpeed
 
-			// adjust radius based on distance to target
+			// Adjust radius based on distance to target.
 			const distanceToTarget = Math.sqrt(dx * dx + dy * dy)
-			gradientPoints[0].radius = Math.max(
+			gradientPoints[0]!.radius = Math.max(
 				canvas.width * 0.2,
 				Math.min(canvas.width * 0.4, canvas.width * 0.3 + distanceToTarget * 0.1),
 			)

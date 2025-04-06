@@ -5,10 +5,4 @@ if [ "$branch" = "main" ]; then
   exit 1
 fi
 
-# if [ "$OS" = "Windows_NT" ]; then
-#   npm_cmd="npm.cmd"
-# else
-#   npm_cmd="npm"
-# fi
-
-# "$npm_cmd" run ...
+pnpm check-types
