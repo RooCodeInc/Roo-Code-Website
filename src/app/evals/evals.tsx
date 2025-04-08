@@ -35,14 +35,10 @@ export function Evals({ runs }: { runs: (Run & { score: number; openRouterModel?
 						Looking for the best model to pair with Roo Code? Here&apos;s what the data shows.
 					</div>
 				</div>
-				<ChartContainer config={chartConfig} className="h-[150px] w-full">
-					<BarChart accessibilityLayer data={data}>
+				<ChartContainer config={chartConfig} className="h-[300px] w-full">
+					<BarChart accessibilityLayer data={data} margin={{ bottom: 100 }}>
 						<CartesianGrid vertical={false} />
-						<XAxis
-							dataKey="model"
-							tickLine={false}
-							tickFormatter={(value) => value.split(": ")[1] ?? value}
-						/>
+						<XAxis interval={0} dataKey="model" tickLine={false} tick={<ModelTick />} allowDataOverflow />
 						<ChartTooltip content={<ChartTooltipContent />} />
 						<Bar
 							dataKey="score"
@@ -88,5 +84,16 @@ export function Evals({ runs }: { runs: (Run & { score: number; openRouterModel?
 				</div>
 			</div>
 		</div>
+	)
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ModelTick = ({ x, y, payload }: any) => {
+	return (
+		<g transform={`translate(${x},${y})`}>
+			<text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-45), translate(15, 10)">
+				{payload.value.split(": ")[1] ?? payload.value}
+			</text>
+		</g>
 	)
 }
