@@ -20,22 +20,39 @@ interface NavBarProps {
 
 export function NavBar({ stars, downloads }: NavBarProps) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
-	const logoSrc = useLogoSrc()
+	const fullLogo = useLogoSrc("withText")
+	const iconLogo = useLogoSrc("icon")
 
 	return (
 		<header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
 			<div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
 				<div className="flex items-center">
 					<Link href="/" className="flex items-center">
-						<Image src={logoSrc} alt="Roo Code Logo" width={120} height={40} className="h-8 w-auto" />
+						{/* icon logo for xs and md screens */}
+						<Image
+							src={iconLogo}
+							alt="Roo Code Logo"
+							width={234}
+							height={150}
+							className="ml-2 block h-6 w-auto sm:hidden md:block lg:hidden"
+						/>
+						{/* full horizontal logo for sm and lg+ screens */}
+						<Image
+							src={fullLogo}
+							alt="Roo Code Logo"
+							width={300}
+							height={64}
+							className="hidden h-8 w-auto sm:block md:hidden lg:block"
+						/>
 					</Link>
 				</div>
 
 				{/* Desktop Navigation */}
-				<nav className="hidden text-sm font-medium md:flex md:items-center md:space-x-3 lg:space-x-8">
+				<nav className="hidden text-sm font-medium md:flex md:items-center md:space-x-3 xl:space-x-8">
+					{/* note: features and testimonials links are hidden for screen sizes smaller than lg */}
 					<ScrollButton
 						targetId="features"
-						className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
+						className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground max-lg:hidden">
 						Features
 					</ScrollButton>
 					<ScrollButton
@@ -87,7 +104,7 @@ export function NavBar({ stars, downloads }: NavBarProps) {
 						className="hidden items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 md:flex">
 						<VscVscode className="-mr-[2px] mt-[1px] h-4 w-4" />
 						<span>
-							Install <span className="font-black">&middot;</span>
+							Install <span className="font-black max-lg:text-xs">&middot;</span>
 						</span>
 						{downloads !== null && <span>{downloads}</span>}
 					</Link>
