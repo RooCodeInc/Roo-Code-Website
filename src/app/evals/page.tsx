@@ -3,6 +3,8 @@ import { getRuns } from "@/db"
 import { Evals } from "./evals"
 import { getOpenRouterModels } from "@/lib/hooks/use-open-router-models"
 
+export const revalidate = 300
+
 export default async function Page() {
 	const models = await getOpenRouterModels()
 
