@@ -1,25 +1,39 @@
 "use client"
 
 import { useMemo } from "react"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { z } from "zod"
+import { ScatterChart, Scatter, CartesianGrid, XAxis, YAxis, LabelList, Label } from "recharts"
 import { useTheme } from "next-themes"
 
 import { type Run } from "@/db"
 
+import { ChartConfig } from "@/components/ui/chart"
 import { ModelInfo, RooCodeSettings } from "@/lib/schemas"
 import { formatTokens } from "@/lib/format-tokens"
 import { formatCurrency } from "@/lib/format-currency"
-import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartConfig } from "@/components/ui/chart"
+import {
+	ChartContainer,
+	ChartTooltip,
+	ChartTooltipContent,
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui"
 
 const chartConfig = {
 	model: { label: "Model" },
 	score: { label: "Score" },
+	cost: { label: "Cost" },
 } satisfies ChartConfig
 
 export function Evals({
 	runs,
 }: {
-	runs: (Run & { score: number; settings?: RooCodeSettings; modelInfo?: ModelInfo | null })[]
+	runs: (Run & { score: number; cost: number; settings?: RooCodeSettings; modelInfo?: ModelInfo | null })[]
 }) {
 	const { theme } = useTheme()
 
@@ -28,6 +42,7 @@ export function Evals({
 			runs.map((run) => ({
 				model: run.description || run.model,
 				score: run.score,
+				cost: run.cost,
 			})),
 		[runs],
 	)
@@ -52,77 +67,85 @@ export function Evals({
 				</div>
 			</div>
 
-			<ChartContainer config={chartConfig} className="h-[320px]">
-				<BarChart accessibilityLayer data={data} margin={{ bottom: 50 }}>
-					<CartesianGrid vertical={false} />
-					<XAxis interval={0} dataKey="model" tickLine={false} tick={<ModelTick />} allowDataOverflow />
-					<ChartTooltip content={<ChartTooltipContent />} />
-					<Bar
-						dataKey="score"
-						fill={theme === "dark" ? "hsl(var(--chart-1))" : "hsl(var(--chart-5))"}
-						radius={2}
-					/>
-				</BarChart>
-			</ChartContainer>
-
-			<div className="flex flex-col">
-				<div>
-					<div className="grid grid-cols-3 gap-4 border-b p-4 md:grid-cols-6">
-						<div className="col-span-2">
-							<div>Model</div>
-							<div className="text-sm opacity-50">Provider ID</div>
-						</div>
-						<div className="hidden md:block">Context Window</div>
-						<div className="hidden md:block" title="Per 1M Tokens">
-							<div>Price</div>
-							<div className="text-sm opacity-50">Input / Output</div>
-						</div>
-						<div className="hidden md:block">Diff Edit?</div>
-						<div className="text-right">Score</div>
-					</div>
-				</div>
-				{runs.map((run) => (
-					<div key={run.id} className="relative">
-						<div
-							className="absolute h-full bg-chart-5/10 dark:bg-chart-1/10"
-							style={{ width: `${run.score}%` }}
-						/>
-						<div className="grid grid-cols-3 items-center gap-4 p-4 md:grid-cols-6">
-							<div className="col-span-2">
-								{run.description ? (
-									<div>
-										<div className="font-medium">{run.description}</div>
-										<div className="text-sm opacity-50">{run.model}</div>
-									</div>
-								) : (
-									<div className="font-medium">{run.model}</div>
-								)}
-							</div>
-							<div className="hidden md:block">{formatTokens(run.modelInfo?.contextWindow ?? 0)}</div>
-							<div className="hidden flex-row gap-2 md:flex">
-								<div>{formatCurrency(run.modelInfo?.inputPrice ?? 0)}</div>
-								<div className="opacity-25">/</div>
-								<div>{formatCurrency(run.modelInfo?.outputPrice ?? 0)}</div>
-							</div>
-							<div className="hidden md:block">{run.settings?.diffEnabled === false ? "No" : "Yes"}</div>
-							<div className="text-right font-mono text-2xl">{run.score}%</div>
-						</div>
-					</div>
-				))}
-			</div>
+			<Table className="border">
+				<TableHeader>
+					<TableRow>
+						<TableHead>Model</TableHead>
+						<TableHead>Context Window</TableHead>
+						<TableHead>Pricing</TableHead>
+						<TableHead>Cost (USD)</TableHead>
+						<TableHead>Score</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					{runs.map((run) => (
+						<TableRow key={run.id}>
+							<TableCell>{run.description || run.model}</TableCell>
+							<TableCell>{formatTokens(run.modelInfo?.contextWindow ?? 0)}</TableCell>
+							<TableCell>
+								<div className="flex flex-row gap-2">
+									<div>{formatCurrency(run.modelInfo?.inputPrice ?? 0)}</div>
+									<div className="opacity-25">/</div>
+									<div>{formatCurrency(run.modelInfo?.outputPrice ?? 0)}</div>
+								</div>
+							</TableCell>
+							<TableCell>{formatCurrency(run.cost)}</TableCell>
+							<TableCell>{run.score}%</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+				<TableCaption>
+					<div className="text-center font-medium">Cost Versus Intelligence</div>
+					<ChartContainer config={chartConfig} className="h-[320px] w-full">
+						<ScatterChart margin={{ top: 20, right: 0, bottom: 20, left: 10 }}>
+							<CartesianGrid />
+							<XAxis
+								type="number"
+								dataKey="cost"
+								name="Cost"
+								domain={[0, 100]}
+								tickFormatter={(value) => formatCurrency(value)}>
+								<Label value="Cost (USD)" position="bottom" offset={10} />
+							</XAxis>
+							<YAxis
+								type="number"
+								dataKey="score"
+								name="Score"
+								domain={[50, 100]}
+								tickFormatter={(value) => `${value}%`}>
+								<Label value="Score" angle={-90} dy={-50} position="left" />
+							</YAxis>
+							<ChartTooltip content={<ChartTooltipContent hideLabel hideIndicator />} />
+							<Scatter
+								data={data}
+								fill={theme === "dark" ? "hsl(var(--chart-1))" : "hsl(var(--chart-5))"}>
+								<LabelList dataKey="model" position="right" content={renderLabel} />
+							</Scatter>
+						</ScatterChart>
+					</ChartContainer>
+				</TableCaption>
+			</Table>
 		</div>
 	)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ModelTick = ({ x, y, payload }: any) => {
+const renderLabel = (props: any) => {
+	const { x, y, value } = z.object({ x: z.number(), y: z.number(), value: z.string() }).parse(props)
+
 	return (
-		<g transform={`translate(${x},${y})`}>
-			<text x={0} dx={0} y={0} dy={0} textAnchor="end" fill="#666" transform="rotate(-90)">
-				{truncate(payload.value.split(": ")[1] ?? payload.value, 10)}
-			</text>
-		</g>
+		<text x={x} dx={13} y={y} dy={9} fontSize={12} fill="currentColor" textAnchor="start" opacity={0.5}>
+			{truncateLabel(value)}
+		</text>
 	)
 }
 
-const truncate = (str: string, maxLength: number) => (str.length <= maxLength ? str : str.slice(0, maxLength) + "...")
+const truncateLabel = (value: string, maxLength = 12) => {
+	if (value.length <= maxLength) {
+		return value
+	}
+
+	const truncatedValue = value.slice(0, maxLength)
+	const lastSpaceIndex = truncatedValue.lastIndexOf(" ")
+	return lastSpaceIndex > 0 ? value.slice(0, lastSpaceIndex) : value.slice(0, maxLength) + "..."
+}
