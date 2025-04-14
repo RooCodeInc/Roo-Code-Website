@@ -129,9 +129,17 @@ export function Evals({
 	)
 }
 
+const labelSchema = z.object({ x: z.number(), y: z.number(), value: z.string() })
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const renderLabel = (props: any) => {
-	const { x, y, value } = z.object({ x: z.number(), y: z.number(), value: z.string() }).parse(props)
+	const result = labelSchema.safeParse(props)
+
+	if (!result.success) {
+		return null
+	}
+
+	const { x, y, value } = result.data
 
 	return (
 		<text x={x} dx={13} y={y} dy={9} fontSize={12} fill="currentColor" textAnchor="start" opacity={0.5}>
