@@ -1,21 +1,28 @@
 import { getRuns } from "@/db"
 
+import { rooCodeSettingsSchema } from "@/lib/schemas"
+import { getModelInfo } from "@/lib/model-info"
+
 import { Evals } from "./evals"
-import { getOpenRouterModels } from "@/lib/hooks/use-open-router-models"
 
 export const revalidate = 300
 
 export default async function Page() {
-	const models = await getOpenRouterModels()
-
 	const runs = (await getRuns())
-		.filter((run) => !!run.taskMetricsId)
+		.filter((run) => !!run.taskMetrics)
+		.filter(({ settings }) => rooCodeSettingsSchema.safeParse(settings).success)
 		.sort((a, b) => b.passed - a.passed)
-		.map((run) => ({
-			...run,
-			score: Math.round((run.passed / (run.passed + run.failed)) * 100),
-			openRouterModel: models.find((model) => model.id === run.model),
-		}))
+		.map((run) => {
+			const settings = rooCodeSettingsSchema.parse(run.settings)
+
+			return {
+				...run,
+				score: Math.round((run.passed / (run.passed + run.failed)) * 100),
+				cost: run.taskMetrics!.cost,
+				settings: settings,
+				modelInfo: getModelInfo(settings),
+			}
+		})
 
 	return <Evals runs={runs} />
 }

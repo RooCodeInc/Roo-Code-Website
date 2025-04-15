@@ -1,99 +1,159 @@
 "use client"
 
 import { useMemo } from "react"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { z } from "zod"
+import { ScatterChart, Scatter, CartesianGrid, XAxis, YAxis, LabelList, Label } from "recharts"
+import { useTheme } from "next-themes"
 
 import { type Run } from "@/db"
+
+import { ChartConfig } from "@/components/ui/chart"
+import { ModelInfo, RooCodeSettings } from "@/lib/schemas"
 import { formatTokens } from "@/lib/format-tokens"
-import { OpenRouterModel } from "@/lib/hooks/use-open-router-models"
-import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartConfig } from "@/components/ui/chart"
-import { useTheme } from "next-themes"
+import { formatCurrency } from "@/lib/format-currency"
+import {
+	ChartContainer,
+	ChartTooltip,
+	ChartTooltipContent,
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui"
 
 const chartConfig = {
 	model: { label: "Model" },
 	score: { label: "Score" },
+	cost: { label: "Cost" },
 } satisfies ChartConfig
 
-export function Evals({ runs }: { runs: (Run & { score: number; openRouterModel?: OpenRouterModel })[] }) {
+export function Evals({
+	runs,
+}: {
+	runs: (Run & { score: number; cost: number; settings?: RooCodeSettings; modelInfo?: ModelInfo | null })[]
+}) {
 	const { theme } = useTheme()
 
 	const data = useMemo(
 		() =>
-			runs.slice(0, 5).map((run) => ({
-				model: run.openRouterModel?.name ?? run.model,
+			runs.map((run) => ({
+				model: run.description || run.model,
 				score: run.score,
+				cost: run.cost,
 			})),
 		[runs],
 	)
 
 	return (
-		<div className="mx-auto my-4 flex max-w-screen-lg flex-col gap-4">
-			<div>
-				<div className="p-2 text-lg font-medium">
-					<div>Top Performing Models</div>
-					<div className="text-sm text-muted-foreground">
-						Looking for the best model to pair with Roo Code? Here&apos;s what the data shows.
-					</div>
+		<div className="mx-auto flex max-w-screen-lg flex-col gap-8 p-8">
+			<div className="flex flex-col gap-4">
+				<div>
+					Roo Code tests each frontier model against{" "}
+					<a href="https://github.com/cte/evals/" className="underline">
+						a suite of hundreds of exercises
+					</a>{" "}
+					across 5 programming languages with varying difficulty. These results can help you find the right
+					price-to-intelligence ratio for your use case.
 				</div>
-				<ChartContainer config={chartConfig} className="h-[300px] w-full">
-					<BarChart accessibilityLayer data={data} margin={{ bottom: 100 }}>
-						<CartesianGrid vertical={false} />
-						<XAxis interval={0} dataKey="model" tickLine={false} tick={<ModelTick />} allowDataOverflow />
-						<ChartTooltip content={<ChartTooltipContent />} />
-						<Bar
-							dataKey="score"
-							fill={theme === "dark" ? "hsl(var(--chart-1))" : "hsl(var(--chart-5))"}
-							radius={2}
-						/>
-					</BarChart>
-				</ChartContainer>
+				<div>
+					Want to see the results for a model we haven&apos;t tested yet? Ping us in{" "}
+					<a href="https://discord.gg/roocode" className="underline">
+						Discord
+					</a>
+					.
+				</div>
 			</div>
-			<div>
-				<div className="p-2 text-lg font-medium">
-					<div>Eval Scores</div>
-					<div className="text-sm text-muted-foreground">
-						Each model is tested using a suite of hundreds of exercises across 5 programming languages with
-						varying difficulty.
-					</div>
-				</div>
-				<div className="flex flex-col border">
-					{runs.map((run, index) => (
-						<div key={run.id} className="relative h-20">
-							<div
-								className="absolute h-full bg-chart-5/10 dark:bg-chart-1/10"
-								style={{ width: `${run.score}%` }}
-							/>
-							<div className="absolute inset-0 p-4">
-								<div className="flex h-full items-center justify-between">
-									<div className="flex items-center gap-5">
-										<div className="text-xl">{index + 1}</div>
-										<div>
-											<div className="font-medium">{run.openRouterModel?.name ?? run.model}</div>
-											<div className="flex flex-row gap-2 text-sm opacity-50">
-												<div>{run.openRouterModel?.id}</div>
-												<div>/</div>
-												<div>{formatTokens(run.openRouterModel?.context_length ?? 0)}</div>
-											</div>
-										</div>
-									</div>
-									<div className="font-mono text-2xl">{run.score}%</div>
+
+			<Table className="border">
+				<TableHeader>
+					<TableRow>
+						<TableHead>Model</TableHead>
+						<TableHead>Context Window</TableHead>
+						<TableHead>Pricing</TableHead>
+						<TableHead>Cost (USD)</TableHead>
+						<TableHead>Score</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					{runs.map((run) => (
+						<TableRow key={run.id}>
+							<TableCell>{run.description || run.model}</TableCell>
+							<TableCell>{formatTokens(run.modelInfo?.contextWindow ?? 0)}</TableCell>
+							<TableCell>
+								<div className="flex flex-row gap-2">
+									<div>{formatCurrency(run.modelInfo?.inputPrice ?? 0)}</div>
+									<div className="opacity-25">/</div>
+									<div>{formatCurrency(run.modelInfo?.outputPrice ?? 0)}</div>
 								</div>
-							</div>
-						</div>
+							</TableCell>
+							<TableCell>{formatCurrency(run.cost)}</TableCell>
+							<TableCell>{run.score}%</TableCell>
+						</TableRow>
 					))}
-				</div>
-			</div>
+				</TableBody>
+				<TableCaption>
+					<div className="text-center font-medium">Cost Versus Intelligence</div>
+					<ChartContainer config={chartConfig} className="h-[320px] w-full">
+						<ScatterChart margin={{ top: 20, right: 0, bottom: 20, left: 10 }}>
+							<CartesianGrid />
+							<XAxis
+								type="number"
+								dataKey="cost"
+								name="Cost"
+								domain={["auto", "auto"]}
+								tickFormatter={(value) => formatCurrency(value)}>
+								<Label value="Cost (USD)" position="bottom" offset={10} />
+							</XAxis>
+							<YAxis
+								type="number"
+								dataKey="score"
+								name="Score"
+								domain={["auto", "auto"]}
+								tickFormatter={(value) => `${value}%`}>
+								<Label value="Score" angle={-90} dy={-50} position="left" />
+							</YAxis>
+							<ChartTooltip content={<ChartTooltipContent hideLabel hideIndicator />} />
+							<Scatter
+								data={data}
+								fill={theme === "dark" ? "hsl(var(--chart-1))" : "hsl(var(--chart-5))"}>
+								<LabelList dataKey="model" position="right" content={renderLabel} />
+							</Scatter>
+						</ScatterChart>
+					</ChartContainer>
+				</TableCaption>
+			</Table>
 		</div>
 	)
 }
 
+const labelSchema = z.object({ x: z.number(), y: z.number(), value: z.string() })
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ModelTick = ({ x, y, payload }: any) => {
+const renderLabel = (props: any) => {
+	const result = labelSchema.safeParse(props)
+
+	if (!result.success) {
+		return null
+	}
+
+	const { x, y, value } = result.data
+
 	return (
-		<g transform={`translate(${x},${y})`}>
-			<text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-45), translate(15, 10)">
-				{payload.value.split(": ")[1] ?? payload.value}
-			</text>
-		</g>
+		<text x={x} dx={13} y={y} dy={9} fontSize={12} fill="currentColor" textAnchor="start" opacity={0.5}>
+			{truncateLabel(value)}
+		</text>
 	)
+}
+
+const truncateLabel = (value: string, maxLength = 12) => {
+	if (value.length <= maxLength) {
+		return value
+	}
+
+	const truncatedValue = value.slice(0, maxLength)
+	const lastSpaceIndex = truncatedValue.lastIndexOf(" ")
+	return lastSpaceIndex > 0 ? value.slice(0, lastSpaceIndex) : value.slice(0, maxLength) + "..."
 }
