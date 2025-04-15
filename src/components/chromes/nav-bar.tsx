@@ -20,30 +20,14 @@ interface NavBarProps {
 
 export function NavBar({ stars, downloads }: NavBarProps) {
 	const [isMenuOpen, setIsMenuOpen] = useState(false)
-	const fullLogo = useLogoSrc("withText")
-	const iconLogo = useLogoSrc("icon")
+	const logoSrc = useLogoSrc()
 
 	return (
 		<header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
 			<div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
 				<div className="flex items-center">
 					<Link href="/" className="flex items-center">
-						{/* icon logo for xs and md screens */}
-						<Image
-							src={iconLogo}
-							alt="Roo Code Logo"
-							width={234}
-							height={150}
-							className="ml-2 block h-6 w-auto sm:hidden md:block lg:hidden"
-						/>
-						{/* full horizontal logo for sm and lg+ screens */}
-						<Image
-							src={fullLogo}
-							alt="Roo Code Logo"
-							width={300}
-							height={64}
-							className="hidden h-8 w-auto sm:block md:hidden lg:block"
-						/>
+						<Image src={logoSrc} alt="Roo Code Logo" width={120} height={40} className="h-8 w-auto" />
 					</Link>
 				</div>
 
@@ -110,31 +94,14 @@ export function NavBar({ stars, downloads }: NavBarProps) {
 					</Link>
 				</div>
 
-				{/* Mobile Menu Button and Icons */}
-				<div className="flex items-center gap-2 md:hidden">
-					<Link
-						href={EXTERNAL_LINKS.GITHUB}
-						target="_blank"
-						className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground">
-						<RxGithubLogo className="h-4 w-4" />
-						{stars !== null && <span>{stars}</span>}
-					</Link>
-					<Link
-						href={EXTERNAL_LINKS.MARKETPLACE}
-						target="_blank"
-						className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground">
-						<VscVscode className="h-4 w-4" />
-						{downloads !== null && <span>{downloads}</span>}
-					</Link>
-					<ThemeToggle />
-					<button
-						aria-expanded={isMenuOpen}
-						onClick={() => setIsMenuOpen(!isMenuOpen)}
-						className="text-muted-foreground hover:text-foreground"
-						aria-label="Toggle mobile menu">
-						{isMenuOpen ? <IoClose className="h-6 w-6" /> : <HiMenu className="h-6 w-6" />}
-					</button>
-				</div>
+				{/* Mobile Menu Button */}
+				<button
+					aria-expanded={isMenuOpen}
+					onClick={() => setIsMenuOpen(!isMenuOpen)}
+					className="flex items-center justify-center rounded-full p-2 transition-colors hover:bg-accent md:hidden"
+					aria-label="Toggle mobile menu">
+					{isMenuOpen ? <IoClose className="h-6 w-6" /> : <HiMenu className="h-6 w-6" />}
+				</button>
 			</div>
 
 			{/* Mobile Menu Panel */}
@@ -185,6 +152,31 @@ export function NavBar({ stars, downloads }: NavBarProps) {
 						onClick={() => setIsMenuOpen(false)}>
 						Careers
 					</a>
+
+					<hr className="mx-8 my-2 border-t border-border/50" />
+
+					{/* Icons & Stats */}
+					<div className="flex items-center justify-center gap-8 px-8 py-3">
+						<Link
+							href={EXTERNAL_LINKS.GITHUB}
+							target="_blank"
+							className="inline-flex items-center gap-2 rounded-md p-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
+							onClick={() => setIsMenuOpen(false)}>
+							<RxGithubLogo className="h-5 w-5" />
+							{stars !== null && <span>{stars}</span>}
+						</Link>
+						<div className="flex items-center rounded-md p-2 transition-colors hover:bg-accent">
+							<ThemeToggle />
+						</div>
+						<Link
+							href={EXTERNAL_LINKS.MARKETPLACE}
+							target="_blank"
+							className="inline-flex items-center gap-2 rounded-md p-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
+							onClick={() => setIsMenuOpen(false)}>
+							<VscVscode className="h-5 w-5" />
+							{downloads !== null && <span>{downloads}</span>}
+						</Link>
+					</div>
 				</nav>
 			</div>
 		</header>
