@@ -32,10 +32,11 @@ export function NavBar({ stars, downloads }: NavBarProps) {
 				</div>
 
 				{/* Desktop Navigation */}
-				<nav className="hidden text-sm font-medium md:flex md:items-center md:space-x-3 lg:space-x-8">
+				<nav className="hidden text-sm font-medium md:flex md:items-center md:space-x-3 xl:space-x-8">
+					{/* note: features and testimonials links are hidden for screen sizes smaller than lg */}
 					<ScrollButton
 						targetId="features"
-						className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground">
+						className="text-muted-foreground transition-transform duration-200 hover:scale-105 hover:text-foreground max-lg:hidden">
 						Features
 					</ScrollButton>
 					<ScrollButton
@@ -72,52 +73,37 @@ export function NavBar({ stars, downloads }: NavBarProps) {
 					</a>
 				</nav>
 
-				<div className="hidden md:flex md:items-center md:space-x-3">
-					<ThemeToggle />
-					<Link
-						href={EXTERNAL_LINKS.GITHUB}
-						target="_blank"
-						className="hidden items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground md:flex">
-						<RxGithubLogo className="h-4 w-4" />
-						{stars !== null && <span>{stars}</span>}
-					</Link>
+				<div className="hidden md:flex md:items-center md:space-x-4">
+					<div className="flex flex-row space-x-2">
+						<ThemeToggle />
+						<Link
+							href={EXTERNAL_LINKS.GITHUB}
+							target="_blank"
+							className="hidden items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground md:flex">
+							<RxGithubLogo className="h-4 w-4" />
+							{stars !== null && <span>{stars}</span>}
+						</Link>
+					</div>
 					<Link
 						href={EXTERNAL_LINKS.MARKETPLACE}
 						target="_blank"
 						className="hidden items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 md:flex">
 						<VscVscode className="-mr-[2px] mt-[1px] h-4 w-4" />
 						<span>
-							Install <span className="font-black">&middot;</span>
+							Install <span className="font-black max-lg:text-xs">&middot;</span>
 						</span>
 						{downloads !== null && <span>{downloads}</span>}
 					</Link>
 				</div>
 
-				{/* Mobile Menu Button and Icons */}
-				<div className="flex items-center gap-2 md:hidden">
-					<Link
-						href={EXTERNAL_LINKS.GITHUB}
-						target="_blank"
-						className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground">
-						<RxGithubLogo className="h-4 w-4" />
-						{stars !== null && <span>{stars}</span>}
-					</Link>
-					<Link
-						href={EXTERNAL_LINKS.MARKETPLACE}
-						target="_blank"
-						className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground">
-						<VscVscode className="h-4 w-4" />
-						{downloads !== null && <span>{downloads}</span>}
-					</Link>
-					<ThemeToggle />
-					<button
-						aria-expanded={isMenuOpen}
-						onClick={() => setIsMenuOpen(!isMenuOpen)}
-						className="text-muted-foreground hover:text-foreground"
-						aria-label="Toggle mobile menu">
-						{isMenuOpen ? <IoClose className="h-6 w-6" /> : <HiMenu className="h-6 w-6" />}
-					</button>
-				</div>
+				{/* Mobile Menu Button */}
+				<button
+					aria-expanded={isMenuOpen}
+					onClick={() => setIsMenuOpen(!isMenuOpen)}
+					className="flex items-center justify-center rounded-full p-2 transition-colors hover:bg-accent md:hidden"
+					aria-label="Toggle mobile menu">
+					{isMenuOpen ? <IoClose className="h-6 w-6" /> : <HiMenu className="h-6 w-6" />}
+				</button>
 			</div>
 
 			{/* Mobile Menu Panel */}
@@ -168,6 +154,31 @@ export function NavBar({ stars, downloads }: NavBarProps) {
 						onClick={() => setIsMenuOpen(false)}>
 						Careers
 					</a>
+
+					<hr className="mx-8 my-2 border-t border-border/50" />
+
+					{/* Icons & Stats */}
+					<div className="flex items-center justify-center gap-8 px-8 py-3">
+						<Link
+							href={EXTERNAL_LINKS.GITHUB}
+							target="_blank"
+							className="inline-flex items-center gap-2 rounded-md p-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
+							onClick={() => setIsMenuOpen(false)}>
+							<RxGithubLogo className="h-5 w-5" />
+							{stars !== null && <span>{stars}</span>}
+						</Link>
+						<div className="flex items-center rounded-md p-2 transition-colors hover:bg-accent">
+							<ThemeToggle />
+						</div>
+						<Link
+							href={EXTERNAL_LINKS.MARKETPLACE}
+							target="_blank"
+							className="inline-flex items-center gap-2 rounded-md p-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
+							onClick={() => setIsMenuOpen(false)}>
+							<VscVscode className="h-5 w-5" />
+							{downloads !== null && <span>{downloads}</span>}
+						</Link>
+					</div>
 				</nav>
 			</div>
 		</header>
