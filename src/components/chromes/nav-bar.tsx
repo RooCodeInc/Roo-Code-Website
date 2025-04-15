@@ -73,15 +73,17 @@ export function NavBar({ stars, downloads }: NavBarProps) {
 					</a>
 				</nav>
 
-				<div className="hidden md:flex md:items-center md:space-x-3">
-					<ThemeToggle />
-					<Link
-						href={EXTERNAL_LINKS.GITHUB}
-						target="_blank"
-						className="hidden items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground md:flex">
-						<RxGithubLogo className="h-4 w-4" />
-						{stars !== null && <span>{stars}</span>}
-					</Link>
+				<div className="hidden md:flex md:items-center md:space-x-4">
+					<div className="flex flex-row space-x-2">
+						<ThemeToggle />
+						<Link
+							href={EXTERNAL_LINKS.GITHUB}
+							target="_blank"
+							className="hidden items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground md:flex">
+							<RxGithubLogo className="h-4 w-4" />
+							{stars !== null && <span>{stars}</span>}
+						</Link>
+					</div>
 					<Link
 						href={EXTERNAL_LINKS.MARKETPLACE}
 						target="_blank"
