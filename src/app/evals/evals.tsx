@@ -2,7 +2,7 @@
 
 import { useMemo } from "react"
 import { z } from "zod"
-import { ScatterChart, Scatter, CartesianGrid, XAxis, YAxis, LabelList, Label } from "recharts"
+import { ScatterChart, Scatter, XAxis, YAxis, LabelList, Label, Customized, Cross } from "recharts"
 import { useTheme } from "next-themes"
 
 import { type Run } from "@/db"
@@ -72,9 +72,9 @@ export function Evals({
 					<TableRow>
 						<TableHead>Model</TableHead>
 						<TableHead>Context Window</TableHead>
-						<TableHead>Pricing</TableHead>
+						<TableHead>Pricing (In / Out)</TableHead>
 						<TableHead>Cost (USD)</TableHead>
-						<TableHead>Score</TableHead>
+						<TableHead>Score (% Correct)</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -95,27 +95,33 @@ export function Evals({
 					))}
 				</TableBody>
 				<TableCaption>
-					<div className="text-center font-medium">Cost Versus Intelligence</div>
+					<div className="text-center font-medium">Cost Versus Score</div>
 					<ChartContainer config={chartConfig} className="h-[320px] w-full">
 						<ScatterChart margin={{ top: 20, right: 0, bottom: 20, left: 10 }}>
-							<CartesianGrid />
 							<XAxis
 								type="number"
 								dataKey="cost"
 								name="Cost"
-								domain={["auto", "auto"]}
+								domain={[
+									(dataMin: number) => Math.round((dataMin - 5) / 5) * 5,
+									(dataMax: number) => Math.round((dataMax + 5) / 5) * 5,
+								]}
 								tickFormatter={(value) => formatCurrency(value)}>
-								<Label value="Cost (USD)" position="bottom" offset={10} />
+								<Label value="Cost" position="bottom" offset={10} />
 							</XAxis>
 							<YAxis
 								type="number"
 								dataKey="score"
 								name="Score"
-								domain={["auto", "auto"]}
+								domain={[
+									(dataMin: number) => Math.max(0, Math.round((dataMin - 5) / 5) * 5),
+									(dataMax: number) => Math.min(100, Math.round((dataMax + 5) / 5) * 5),
+								]}
 								tickFormatter={(value) => `${value}%`}>
-								<Label value="Score" angle={-90} dy={-50} position="left" />
+								<Label value="Score" angle={-90} position="left" dy={-15} />
 							</YAxis>
 							<ChartTooltip content={<ChartTooltipContent hideLabel hideIndicator />} />
+							<Customized component={renderQuadrant} />
 							<Scatter
 								data={data}
 								fill={theme === "dark" ? "hsl(var(--chart-1))" : "hsl(var(--chart-5))"}>
@@ -157,3 +163,17 @@ const truncateLabel = (value: string, maxLength = 12) => {
 	const lastSpaceIndex = truncatedValue.lastIndexOf(" ")
 	return lastSpaceIndex > 0 ? value.slice(0, lastSpaceIndex) : value.slice(0, maxLength) + "..."
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const renderQuadrant = (props: any) => (
+	<Cross
+		width={props.width}
+		height={props.height}
+		x={props.width / 2 + 35}
+		y={props.height / 2 - 15}
+		top={0}
+		left={0}
+		stroke="currentColor"
+		opacity={0.1}
+	/>
+)
