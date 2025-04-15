@@ -103,7 +103,10 @@ export function Evals({
 								type="number"
 								dataKey="cost"
 								name="Cost"
-								domain={["auto", "auto"]}
+								domain={[
+									(dataMin: number) => Math.round((dataMin - 5) / 5) * 5,
+									(dataMax: number) => Math.round((dataMax + 5) / 5) * 5,
+								]}
 								tickFormatter={(value) => formatCurrency(value)}>
 								<Label value="Cost (USD)" position="bottom" offset={10} />
 							</XAxis>
@@ -111,9 +114,12 @@ export function Evals({
 								type="number"
 								dataKey="score"
 								name="Score"
-								domain={["auto", "auto"]}
+								domain={[
+									(dataMin: number) => Math.max(0, Math.round((dataMin - 5) / 5) * 5),
+									(dataMax: number) => Math.min(100, Math.round((dataMax + 5) / 5) * 5),
+								]}
 								tickFormatter={(value) => `${value}%`}>
-								<Label value="Score" angle={-90} dy={-50} position="left" />
+								<Label value="Score" angle={-90} position="left" />
 							</YAxis>
 							<ChartTooltip content={<ChartTooltipContent hideLabel hideIndicator />} />
 							<Scatter
