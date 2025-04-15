@@ -103,7 +103,7 @@ export function Evals({
 								type="number"
 								dataKey="cost"
 								name="Cost"
-								domain={[0, 100]}
+								domain={["auto", "auto"]}
 								tickFormatter={(value) => formatCurrency(value)}>
 								<Label value="Cost (USD)" position="bottom" offset={10} />
 							</XAxis>
@@ -111,7 +111,7 @@ export function Evals({
 								type="number"
 								dataKey="score"
 								name="Score"
-								domain={[50, 100]}
+								domain={["auto", "auto"]}
 								tickFormatter={(value) => `${value}%`}>
 								<Label value="Score" angle={-90} dy={-50} position="left" />
 							</YAxis>
