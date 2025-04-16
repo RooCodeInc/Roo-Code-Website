@@ -1,13 +1,11 @@
 "use client"
 
 import { useMemo } from "react"
-import { z } from "zod"
-import { ScatterChart, Scatter, XAxis, YAxis, LabelList, Label, Customized, Cross } from "recharts"
-import { useTheme } from "next-themes"
+import { ScatterChart, Scatter, XAxis, YAxis, Label, Customized, Cross } from "recharts"
 
 import { type Run } from "@/db"
 
-import { ChartConfig } from "@/components/ui/chart"
+import { ChartConfig, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
 import { ModelInfo, RooCodeSettings } from "@/lib/schemas"
 import { formatTokens } from "@/lib/format-tokens"
 import { formatCurrency } from "@/lib/format-currency"
@@ -24,27 +22,28 @@ import {
 	TableRow,
 } from "@/components/ui"
 
-const chartConfig = {
-	model: { label: "Model" },
-	score: { label: "Score" },
-	cost: { label: "Cost" },
-} satisfies ChartConfig
+const OMIT = new Set(["o3"])
 
 export function Evals({
 	runs,
 }: {
 	runs: (Run & { score: number; cost: number; settings?: RooCodeSettings; modelInfo?: ModelInfo | null })[]
 }) {
-	const { theme } = useTheme()
-
 	const data = useMemo(
 		() =>
-			runs.map((run) => ({
-				model: run.description || run.model,
-				score: run.score,
-				cost: run.cost,
-			})),
+			runs
+				.map((run) => ({
+					label: run.description || run.model,
+					score: run.score,
+					cost: run.cost,
+				}))
+				.filter((d) => !OMIT.has(d.label)),
 		[runs],
+	)
+
+	const chartConfig = useMemo(
+		() => data.reduce((acc, run) => ({ ...acc, [run.label]: run }), {} as ChartConfig),
+		[data],
 	)
 
 	return (
@@ -96,8 +95,8 @@ export function Evals({
 				</TableBody>
 				<TableCaption>
 					<div className="text-center font-medium">Cost Versus Score</div>
-					<ChartContainer config={chartConfig} className="h-[320px] w-full">
-						<ScatterChart margin={{ top: 20, right: 0, bottom: 20, left: 10 }}>
+					<ChartContainer config={chartConfig} className="h-[500px] w-full">
+						<ScatterChart margin={{ top: 0, right: 0, bottom: 0, left: 20 }}>
 							<XAxis
 								type="number"
 								dataKey="cost"
@@ -107,7 +106,7 @@ export function Evals({
 									(dataMax: number) => Math.round((dataMax + 5) / 5) * 5,
 								]}
 								tickFormatter={(value) => formatCurrency(value)}>
-								<Label value="Cost" position="bottom" offset={10} />
+								<Label value="Cost" position="bottom" offset={0} />
 							</XAxis>
 							<YAxis
 								type="number"
@@ -120,48 +119,18 @@ export function Evals({
 								tickFormatter={(value) => `${value}%`}>
 								<Label value="Score" angle={-90} position="left" dy={-15} />
 							</YAxis>
-							<ChartTooltip content={<ChartTooltipContent hideLabel hideIndicator />} />
+							<ChartTooltip content={<ChartTooltipContent labelKey="label" hideIndicator />} />
 							<Customized component={renderQuadrant} />
-							<Scatter
-								data={data}
-								fill={theme === "dark" ? "hsl(var(--chart-1))" : "hsl(var(--chart-5))"}>
-								<LabelList dataKey="model" position="right" content={renderLabel} />
-							</Scatter>
+							{data.map((d, i) => (
+								<Scatter key={d.label} name={d.label} data={[d]} fill={`hsl(var(--chart-${i + 1}))`} />
+							))}
+							<ChartLegend content={<ChartLegendContent />} />
 						</ScatterChart>
 					</ChartContainer>
 				</TableCaption>
 			</Table>
 		</div>
 	)
-}
-
-const labelSchema = z.object({ x: z.number(), y: z.number(), value: z.string() })
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const renderLabel = (props: any) => {
-	const result = labelSchema.safeParse(props)
-
-	if (!result.success) {
-		return null
-	}
-
-	const { x, y, value } = result.data
-
-	return (
-		<text x={x} dx={13} y={y} dy={9} fontSize={12} fill="currentColor" textAnchor="start" opacity={0.5}>
-			{truncateLabel(value)}
-		</text>
-	)
-}
-
-const truncateLabel = (value: string, maxLength = 12) => {
-	if (value.length <= maxLength) {
-		return value
-	}
-
-	const truncatedValue = value.slice(0, maxLength)
-	const lastSpaceIndex = truncatedValue.lastIndexOf(" ")
-	return lastSpaceIndex > 0 ? value.slice(0, lastSpaceIndex) : value.slice(0, maxLength) + "..."
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
