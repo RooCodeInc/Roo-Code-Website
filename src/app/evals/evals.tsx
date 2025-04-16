@@ -94,15 +94,15 @@ export function Evals({
 							Price
 							<div className="text-xs opacity-50">In / Out</div>
 						</TableHead>
+						<TableHead>Duration</TableHead>
 						<TableHead>
 							Tokens
 							<div className="text-xs opacity-50">In / Out</div>
 						</TableHead>
-						<TableHead>
+						<TableHead className="border-r">
 							Cost
 							<div className="text-xs opacity-50">USD</div>
 						</TableHead>
-						<TableHead className="border-r">Duration</TableHead>
 						<TableHead>
 							<i className="devicon-go-plain text-lg" title="Go" />
 						</TableHead>
@@ -121,11 +121,11 @@ export function Evals({
 						<TableHead>Total</TableHead>
 					</TableRow>
 				</TableHeader>
-				<TableBody>
+				<TableBody className="font-mono">
 					{runs.map((run) => (
 						<TableRow key={run.id}>
 							<TableCell>
-								<div>{run.label}</div>
+								<div className="font-sans">{run.label}</div>
 								<div className="text-xs opacity-50">
 									{formatTokens(run.modelInfo?.contextWindow ?? 0)}
 								</div>
@@ -137,6 +137,7 @@ export function Evals({
 									<div>{formatCurrency(run.modelInfo?.outputPrice ?? 0)}</div>
 								</div>
 							</TableCell>
+							<TableCell className="font-mono">{formatDuration(run.taskMetrics.duration)}</TableCell>
 							<TableCell>
 								<div className="flex flex-row gap-2">
 									<div>{formatTokens(run.taskMetrics.tokensIn)}</div>
@@ -144,13 +145,22 @@ export function Evals({
 									<div>{formatTokens(run.taskMetrics.tokensOut)}</div>
 								</div>
 							</TableCell>
-							<TableCell>{formatCurrency(run.taskMetrics.cost)}</TableCell>
-							<TableCell className="border-r">{formatDuration(run.taskMetrics.duration)}</TableCell>
-							<TableCell>{formatScore(run.languageScores?.go ?? 0)}%</TableCell>
-							<TableCell>{formatScore(run.languageScores?.java ?? 0)}%</TableCell>
-							<TableCell>{formatScore(run.languageScores?.javascript ?? 0)}%</TableCell>
-							<TableCell>{formatScore(run.languageScores?.python ?? 0)}%</TableCell>
-							<TableCell>{formatScore(run.languageScores?.rust ?? 0)}%</TableCell>
+							<TableCell className="border-r">{formatCurrency(run.taskMetrics.cost)}</TableCell>
+							<TableCell className="text-muted-foreground">
+								{formatScore(run.languageScores?.go ?? 0)}%
+							</TableCell>
+							<TableCell className="text-muted-foreground">
+								{formatScore(run.languageScores?.java ?? 0)}%
+							</TableCell>
+							<TableCell className="text-muted-foreground">
+								{formatScore(run.languageScores?.javascript ?? 0)}%
+							</TableCell>
+							<TableCell className="text-muted-foreground">
+								{formatScore(run.languageScores?.python ?? 0)}%
+							</TableCell>
+							<TableCell className="text-muted-foreground">
+								{formatScore(run.languageScores?.rust ?? 0)}%
+							</TableCell>
 							<TableCell className="font-bold">{run.score}%</TableCell>
 						</TableRow>
 					))}
