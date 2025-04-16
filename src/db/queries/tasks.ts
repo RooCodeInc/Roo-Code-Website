@@ -4,10 +4,8 @@ import { RecordNotFoundError } from "./errors"
 import { tasks } from "../schema"
 import { db } from "../db"
 
-const table = tasks
-
 export const findTask = async (id: number) => {
-	const run = await db.query.tasks.findFirst({ where: eq(table.id, id) })
+	const run = await db.query.tasks.findFirst({ where: eq(tasks.id, id) })
 
 	if (!run) {
 		throw new RecordNotFoundError()
@@ -24,8 +22,8 @@ type GetTask = {
 
 export const getTask = async ({ runId, language, exercise }: GetTask) =>
 	db.query.tasks.findFirst({
-		where: and(eq(table.runId, runId), eq(table.language, language), eq(table.exercise, exercise)),
+		where: and(eq(tasks.runId, runId), eq(tasks.language, language), eq(tasks.exercise, exercise)),
 	})
 
 export const getTasks = async (runId: number) =>
-	db.query.tasks.findMany({ where: eq(table.runId, runId), with: { taskMetrics: true } })
+	db.query.tasks.findMany({ where: eq(tasks.runId, runId), with: { taskMetrics: true } })

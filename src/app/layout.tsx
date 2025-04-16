@@ -44,6 +44,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en" suppressHydrationWarning>
+			<head>
+				<link
+					rel="stylesheet"
+					type="text/css"
+					href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+				/>
+			</head>
 			<body className={inter.className}>
 				<div itemScope itemType="https://schema.org/WebSite">
 					<link itemProp="url" href="https://roocode.com" />
