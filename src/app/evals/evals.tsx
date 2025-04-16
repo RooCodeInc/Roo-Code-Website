@@ -3,12 +3,11 @@
 import { useMemo } from "react"
 import { ScatterChart, Scatter, XAxis, YAxis, Label, Customized, Cross } from "recharts"
 
-import { type Run } from "@/db"
+import { TaskMetrics, type Run } from "@/db"
 
 import { ChartConfig, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
 import { ModelInfo, RooCodeSettings } from "@/lib/schemas"
-import { formatTokens } from "@/lib/format-tokens"
-import { formatCurrency } from "@/lib/format-currency"
+import { formatTokens, formatCurrency, formatDuration, formatScore } from "@/lib"
 import {
 	ChartContainer,
 	ChartTooltip,
@@ -27,7 +26,14 @@ const OMIT = new Set(["o3"])
 export function Evals({
 	runs,
 }: {
-	runs: (Run & { score: number; cost: number; settings?: RooCodeSettings; modelInfo?: ModelInfo | null })[]
+	runs: (Run & {
+		label: string
+		score: number
+		languageScores?: Record<"go" | "java" | "javascript" | "python" | "rust", number>
+		taskMetrics: TaskMetrics
+		settings?: RooCodeSettings
+		modelInfo?: ModelInfo | null
+	})[]
 }) {
 	const data = useMemo(
 		() =>
@@ -35,7 +41,7 @@ export function Evals({
 				.map((run) => ({
 					label: run.description || run.model,
 					score: run.score,
-					cost: run.cost,
+					cost: run.taskMetrics.cost,
 				}))
 				.filter((d) => !OMIT.has(d.label)),
 		[runs],
@@ -69,27 +75,83 @@ export function Evals({
 			<Table className="border">
 				<TableHeader>
 					<TableRow>
-						<TableHead>Model</TableHead>
-						<TableHead>Context Window</TableHead>
-						<TableHead>Pricing (In / Out)</TableHead>
-						<TableHead>Cost (USD)</TableHead>
-						<TableHead>Score (% Correct)</TableHead>
+						<TableHead colSpan={2} className="border-r text-center">
+							Model
+						</TableHead>
+						<TableHead colSpan={3} className="border-r text-center">
+							Metrics
+						</TableHead>
+						<TableHead colSpan={6} className="text-center">
+							Scores
+						</TableHead>
+					</TableRow>
+					<TableRow>
+						<TableHead>
+							Name
+							<div className="text-xs opacity-50">Context Window</div>
+						</TableHead>
+						<TableHead className="border-r">
+							Price
+							<div className="text-xs opacity-50">In / Out</div>
+						</TableHead>
+						<TableHead>
+							Tokens
+							<div className="text-xs opacity-50">In / Out</div>
+						</TableHead>
+						<TableHead>
+							Cost
+							<div className="text-xs opacity-50">USD</div>
+						</TableHead>
+						<TableHead className="border-r">Duration</TableHead>
+						<TableHead>
+							<i className="devicon-go-plain text-lg" title="Go" />
+						</TableHead>
+						<TableHead>
+							<i className="devicon-java-plain text-lg" title="Java" />
+						</TableHead>
+						<TableHead>
+							<i className="devicon-javascript-plain text-lg" title="JavaScript" />
+						</TableHead>
+						<TableHead>
+							<i className="devicon-python-plain text-lg" title="Python" />
+						</TableHead>
+						<TableHead>
+							<i className="devicon-rust-original text-lg" title="Rust" />
+						</TableHead>
+						<TableHead>Total</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
 					{runs.map((run) => (
 						<TableRow key={run.id}>
-							<TableCell>{run.description || run.model}</TableCell>
-							<TableCell>{formatTokens(run.modelInfo?.contextWindow ?? 0)}</TableCell>
 							<TableCell>
+								<div>{run.label}</div>
+								<div className="text-xs opacity-50">
+									{formatTokens(run.modelInfo?.contextWindow ?? 0)}
+								</div>
+							</TableCell>
+							<TableCell className="border-r">
 								<div className="flex flex-row gap-2">
 									<div>{formatCurrency(run.modelInfo?.inputPrice ?? 0)}</div>
 									<div className="opacity-25">/</div>
 									<div>{formatCurrency(run.modelInfo?.outputPrice ?? 0)}</div>
 								</div>
 							</TableCell>
-							<TableCell>{formatCurrency(run.cost)}</TableCell>
-							<TableCell>{run.score}%</TableCell>
+							<TableCell>
+								<div className="flex flex-row gap-2">
+									<div>{formatTokens(run.taskMetrics.tokensIn)}</div>
+									<div className="opacity-25">/</div>
+									<div>{formatTokens(run.taskMetrics.tokensOut)}</div>
+								</div>
+							</TableCell>
+							<TableCell>{formatCurrency(run.taskMetrics.cost)}</TableCell>
+							<TableCell className="border-r">{formatDuration(run.taskMetrics.duration)}</TableCell>
+							<TableCell>{formatScore(run.languageScores?.go ?? 0)}%</TableCell>
+							<TableCell>{formatScore(run.languageScores?.java ?? 0)}%</TableCell>
+							<TableCell>{formatScore(run.languageScores?.javascript ?? 0)}%</TableCell>
+							<TableCell>{formatScore(run.languageScores?.python ?? 0)}%</TableCell>
+							<TableCell>{formatScore(run.languageScores?.rust ?? 0)}%</TableCell>
+							<TableCell className="font-bold">{run.score}%</TableCell>
 						</TableRow>
 					))}
 				</TableBody>
