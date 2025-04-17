@@ -21,8 +21,6 @@ import {
 	TableRow,
 } from "@/components/ui"
 
-const OMIT = new Set(["o3"])
-
 export function Evals({
 	runs,
 }: {
@@ -43,7 +41,7 @@ export function Evals({
 					score: run.score,
 					cost: run.taskMetrics.cost,
 				}))
-				.filter((d) => !OMIT.has(d.label)),
+				.filter(({ cost }) => cost < 100),
 		[runs],
 	)
 
@@ -71,7 +69,6 @@ export function Evals({
 					.
 				</div>
 			</div>
-
 			<Table className="border">
 				<TableHeader>
 					<TableRow>
@@ -166,7 +163,7 @@ export function Evals({
 					))}
 				</TableBody>
 				<TableCaption>
-					<div className="text-center font-medium">Cost Versus Score</div>
+					<div className="pb-4 font-medium">Cost Versus Score</div>
 					<ChartContainer config={chartConfig} className="h-[500px] w-full">
 						<ScatterChart margin={{ top: 0, right: 0, bottom: 0, left: 20 }}>
 							<XAxis
@@ -199,6 +196,9 @@ export function Evals({
 							<ChartLegend content={<ChartLegendContent />} />
 						</ScatterChart>
 					</ChartContainer>
+					<div className="py-4 text-xs opacity-50">
+						(Note: Very expensive models are exluded from the scatter plot.)
+					</div>
 				</TableCaption>
 			</Table>
 		</div>
