@@ -5,7 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { ChevronDown } from "lucide-react"
 import { RxGithubLogo, RxDiscordLogo } from "react-icons/rx"
-import { FaReddit } from "react-icons/fa6"
+import { FaReddit, FaXTwitter } from "react-icons/fa6"
 
 import { EXTERNAL_LINKS, INTERNAL_LINKS } from "@/lib/constants"
 import { useLogoSrc } from "@/lib/hooks/use-logo-src"
@@ -64,6 +64,14 @@ export function Footer() {
 								className="text-muted-foreground transition-colors hover:text-foreground">
 								<FaReddit className="h-6 w-6" />
 								<span className="sr-only">Reddit</span>
+							</a>
+							<a
+								href={EXTERNAL_LINKS.TWITTER}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="text-muted-foreground transition-colors hover:text-foreground">
+								<FaXTwitter className="h-6 w-6" />
+								<span className="sr-only">X/Twitter</span>
 							</a>
 						</div>
 					</div>
@@ -137,15 +145,6 @@ export function Footer() {
 									</li>
 									<li>
 										<a
-											href={EXTERNAL_LINKS.COMMUNITY}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
-											Community
-										</a>
-									</li>
-									<li>
-										<a
 											href={EXTERNAL_LINKS.DISCORD}
 											target="_blank"
 											rel="noopener noreferrer"
@@ -160,6 +159,15 @@ export function Footer() {
 											rel="noopener noreferrer"
 											className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
 											Reddit
+										</a>
+									</li>
+									<li>
+										<a
+											href={EXTERNAL_LINKS.TWITTER}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+											X/Twitter
 										</a>
 									</li>
 								</ul>
