@@ -6,6 +6,8 @@ export const EXTERNAL_LINKS = {
 	TWITTER: "https://x.com/roo_code",
 	DISCORD: "https://discord.gg/roocode",
 	REDDIT: "https://reddit.com/r/RooCode",
+	BLUESKY: "https://bsky.app/profile/roocode.bsky.social",
+	LINKEDIN: "https://www.linkedin.com/company/roo-code",
 	DOCUMENTATION: "https://docs.roocode.com",
 	CAREERS: "https://careers.roocode.com",
 	ISSUES: "https://github.com/RooVetGit/Roo-Code/issues",
