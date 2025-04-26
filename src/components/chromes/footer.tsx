@@ -5,7 +5,8 @@ import Link from "next/link"
 import Image from "next/image"
 import { ChevronDown } from "lucide-react"
 import { RxGithubLogo, RxDiscordLogo } from "react-icons/rx"
-import { FaReddit, FaXTwitter } from "react-icons/fa6"
+import { FaReddit, FaXTwitter, FaLinkedin } from "react-icons/fa6"
+import { SiBluesky } from "react-icons/si"
 
 import { EXTERNAL_LINKS, INTERNAL_LINKS } from "@/lib/constants"
 import { useLogoSrc } from "@/lib/hooks/use-logo-src"
@@ -72,6 +73,22 @@ export function Footer() {
 								className="text-muted-foreground transition-colors hover:text-foreground">
 								<FaXTwitter className="h-6 w-6" />
 								<span className="sr-only">X/Twitter</span>
+							</a>
+							<a
+								href={EXTERNAL_LINKS.BLUESKY}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="text-muted-foreground transition-colors hover:text-foreground">
+								<SiBluesky className="h-6 w-6" />
+								<span className="sr-only">Bluesky</span>
+							</a>
+							<a
+								href={EXTERNAL_LINKS.LINKEDIN}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="text-muted-foreground transition-colors hover:text-foreground">
+								<FaLinkedin className="h-6 w-6" />
+								<span className="sr-only">LinkedIn</span>
 							</a>
 						</div>
 					</div>
