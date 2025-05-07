@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaRobot, FaCode, FaBrain, FaTools, FaTerminal, FaPuzzlePiece, FaGlobe } from "react-icons/fa";
+import { FaRobot, FaCode, FaBrain, FaTools, FaTerminal, FaPuzzlePiece, FaGlobe, FaSitemap } from "react-icons/fa";
 import { FeaturesMobile } from "./features-mobile";
 
 import { ReactNode } from "react";
@@ -18,12 +18,18 @@ export const features: Feature[] = [
         icon: <FaRobot className="h-6 w-6" />,
         title: "Your AI Dev Team in VS Code",
         description: "Roo Code puts a team of agentic AI assistants directly in your editor, with the power to plan, write, and fix code across multiple files.",
-        size: "large",
+        size: "small",
     },
     {
         icon: <FaCode className="h-6 w-6" />,
         title: "Multiple Specialized Modes",
         description: "From coding to debugging to architecture, Roo Code has a mode for every dev scenario—just switch on the fly.",
+        size: "small",
+    },
+    {
+        icon: <FaSitemap className="h-6 w-6" />,
+        title: "Task Orchestrator",
+        description: "Let Roo Code manage complex tasks by breaking them down and delegating to specialized AI modes. Streamline your development with intelligent workflow automation.",
         size: "small",
     },
     {
