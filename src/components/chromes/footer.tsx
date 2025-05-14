@@ -5,7 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { ChevronDown } from "lucide-react"
 import { RxGithubLogo, RxDiscordLogo } from "react-icons/rx"
-import { FaReddit, FaXTwitter, FaLinkedin } from "react-icons/fa6"
+import { FaReddit, FaXTwitter, FaLinkedin, FaYoutube } from "react-icons/fa6"
 import { SiBluesky } from "react-icons/si"
 
 import { EXTERNAL_LINKS, INTERNAL_LINKS } from "@/lib/constants"
@@ -89,6 +89,14 @@ export function Footer() {
 								className="text-muted-foreground transition-colors hover:text-foreground">
 								<FaLinkedin className="h-6 w-6" />
 								<span className="sr-only">LinkedIn</span>
+							</a>
+							<a
+								href={EXTERNAL_LINKS.YOUTUBE}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="text-muted-foreground transition-colors hover:text-foreground">
+								<FaYoutube className="h-6 w-6" />
+								<span className="sr-only">YouTube</span>
 							</a>
 						</div>
 					</div>
@@ -185,6 +193,15 @@ export function Footer() {
 											rel="noopener noreferrer"
 											className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
 											X/Twitter
+										</a>
+									</li>
+									<li>
+										<a
+											href={EXTERNAL_LINKS.YOUTUBE}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="text-sm leading-6 text-muted-foreground transition-colors hover:text-foreground">
+											YouTube
 										</a>
 									</li>
 								</ul>
